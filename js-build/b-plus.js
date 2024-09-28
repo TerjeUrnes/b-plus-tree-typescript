@@ -6,10 +6,13 @@ const utils_1 = require("./utils");
  * A B++ Tree implementation in TypeScript.
  */
 class BPlus {
-    get DataBlocksCount() {
-        return 0;
-    }
     constructor() { }
+    Get(key) {
+        return null;
+    }
+    GetFirstOnOrAfter(key) {
+        return null;
+    }
     GetWithRapport(key) {
         return new utils_1.TraverseRapport();
     }

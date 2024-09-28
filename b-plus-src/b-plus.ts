@@ -8,10 +8,6 @@ import { TraverseRapport } from "./utils";
  */
 export class BPlus {
 
-    public get DataBlocksCount() : number {
-        return 0;
-    }
-
     constructor() {}
 
     public Get(key: IKey) : IDataBlock | null {

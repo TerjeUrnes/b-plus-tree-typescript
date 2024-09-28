@@ -13,8 +13,8 @@ describe('Testing empty instance', () => {
         expect(instance).toBeInstanceOf(BPlus);
     });
 
-    test("Has no data blocks (leafs)", () => {
-        expect(instance.DataBlocksCount).toBe(0)
+    test("Finds no node, and get null", () => {
+        expect(instance.GetFirstOnOrAfter(new Key(0))).toBeNull();
     })
 
     test("Has no nodes to step through", () => {
