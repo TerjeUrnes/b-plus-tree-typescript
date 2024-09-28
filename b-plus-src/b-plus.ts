@@ -1,4 +1,5 @@
 import { BPlusNode } from "./b-plus-node";
+import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
 import { TraverseRapport } from "./utils";
 
@@ -12,6 +13,14 @@ export class BPlus {
     }
 
     constructor() {}
+
+    public Get(key: IKey) : IDataBlock | null {
+        return null;
+    }
+
+    public GetFirstOnOrAfter(key: IKey) : IDataBlock | null {
+        return null;
+    }
 
     public GetWithRapport(key: IKey) : TraverseRapport {
         return new TraverseRapport();
