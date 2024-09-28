@@ -9,11 +9,11 @@ describe('Testing empty instance', () => {
         instance = new BPlus();
     });
 
-    test('Can init instance', () => {
+    test("Can init instance", () => {
         expect(instance).toBeInstanceOf(BPlus);
     });
 
-    test("Finds no node, and get null", () => {
+    test("Finds no block, and get null", () => {
         expect(instance.GetFirstOnOrAfter(new Key(0))).toBeNull();
     })
 

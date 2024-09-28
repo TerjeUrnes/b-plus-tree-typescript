@@ -24,4 +24,8 @@ export class DataBlock implements IDataBlock {
         this._next = value;
     }
 
+    constructor(key: IKey) {
+        this._key = key;
+    }   
+
 }
