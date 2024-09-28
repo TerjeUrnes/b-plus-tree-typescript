@@ -1,4 +1,5 @@
 import { BPlus } from "../b-plus-src/b-plus";
+import { Key } from "./key";
 
 describe('Testing empty instance', () => {
 
@@ -15,4 +16,9 @@ describe('Testing empty instance', () => {
     test("Has no data blocks (leafs)", () => {
         expect(instance.DataBlocksCount).toBe(0)
     })
+
+    test("Has no nodes to step through", () => {
+        var rapport = instance.GetWithRapport(new Key(0));
+        expect(rapport.StepCount).toBe(0);
+    });
 });
