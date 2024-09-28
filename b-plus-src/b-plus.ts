@@ -1,4 +1,5 @@
 import { BPlusNode } from "./b-plus-node";
+import { IKey } from "./ikey";
 import { TraverseRapport } from "./utils";
 
 /**
@@ -12,7 +13,7 @@ export class BPlus {
 
     constructor() {}
 
-    public GetWithRapport(key: number) : TraverseRapport {
+    public GetWithRapport(key: IKey) : TraverseRapport {
         return new TraverseRapport();
     }
 }
