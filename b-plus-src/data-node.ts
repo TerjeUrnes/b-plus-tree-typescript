@@ -6,7 +6,7 @@ import { IKey } from "./ikey";
 export class DataNode extends BPlusNode {
 
     private readonly _numBlocks: number;
-    private readonly _movedAtSplit: number;
+    private readonly _afterAtSplit: number;
     private readonly _minBeforeUnderflow: number;
 
     public get Key() : IKey {
@@ -18,12 +18,12 @@ export class DataNode extends BPlusNode {
     }
 
     constructor(parent: BPlusNode | null, 
-        numBlocks: number, moveAtSplit: number, minBeforeUnderflow: number,
+        numBlocks: number, afterAtSplit: number, minBeforeUnderflow: number,
         firstBlock: IDataBlock
     ) {
         super(parent, numBlocks);
         this._numBlocks = numBlocks;
-        this._movedAtSplit = moveAtSplit;
+        this._afterAtSplit = afterAtSplit;
         this._minBeforeUnderflow = minBeforeUnderflow;
         this._children[this._childrenCount++] = firstBlock;
     }

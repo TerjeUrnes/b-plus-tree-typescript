@@ -12,7 +12,7 @@ export class BPlus {
     private readonly ORDER_OF_THE_TREE: number = 5;
 
     private readonly _orderOfTheTree: number;
-    private readonly _numChildMovedAtSplit: number;
+    private readonly _numChildAfterSplit: number;
     private readonly _minNumChildBeforeUnderflow: number;
 
     private _root: BPlusNode | null = null;
@@ -25,11 +25,11 @@ export class BPlus {
 
     constructor(
         orderOfTheTree: number = this.ORDER_OF_THE_TREE,
-        numChildMovedAtSplit: number = orderOfTheTree / 2,
+        numChildAfterSplit: number = orderOfTheTree / 2,
         minNumChildBeforeUnderflow: number = orderOfTheTree / 2    
     ) {
         this._orderOfTheTree = orderOfTheTree > 2 ? orderOfTheTree : 2;
-        this._numChildMovedAtSplit = numChildMovedAtSplit > 1 ? numChildMovedAtSplit : 1;
+        this._numChildAfterSplit = numChildAfterSplit > 1 ? numChildAfterSplit : 1;
         this._minNumChildBeforeUnderflow = minNumChildBeforeUnderflow > 1 ? minNumChildBeforeUnderflow : 1;
     }
 
@@ -41,7 +41,7 @@ export class BPlus {
             this._root = new DataNode(
                 null,
                 this._orderOfTheTree,
-                this._numChildMovedAtSplit, 
+                this._numChildAfterSplit, 
                 this._minNumChildBeforeUnderflow, 
                 dataBlock);
         }
