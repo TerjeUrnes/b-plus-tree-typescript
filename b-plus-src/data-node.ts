@@ -9,11 +9,12 @@ export class DataNode extends BPlusNode {
     private readonly _movedAtSplit: number;
     private readonly _minBeforeUnderflow: number;
 
-    private _dataBlocks: Array<IDataBlock>
-    private _blockCount: number = 0;
+    public get Key() : IKey {
+        return this.SmallestKey;
+    }
 
     public get SmallestKey() : IKey {
-        return this._dataBlocks[0].Key;
+        return this._children[0].Key;
     }
 
     constructor(parent: BPlusNode | null, 
@@ -24,17 +25,19 @@ export class DataNode extends BPlusNode {
         this._numBlocks = numBlocks;
         this._movedAtSplit = moveAtSplit;
         this._minBeforeUnderflow = minBeforeUnderflow;
-        this._dataBlocks = new Array<IDataBlock>(numBlocks + 1);
-        this._dataBlocks[0] = firstBlock;
-        this._blockCount++;
+        this._children[this._childrenCount++] = firstBlock;
     }
 
     public Add(dataBlock: IDataBlock) : BPlusNode | null {
-        this._dataBlocks[this._blockCount++] = dataBlock;
+        this._children[this._childrenCount++] = dataBlock;
         return null;
     } 
 
     public Get(key: IKey): IDataBlock | null {
-        return null;
+        const index = this.GetChildIndex(key);
+        if (index >= this._childrenCount) {
+            return null;
+        }
+        return this._children[index] as IDataBlock;
     }
 }

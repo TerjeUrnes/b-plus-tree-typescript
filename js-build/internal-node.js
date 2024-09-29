@@ -3,11 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InternalNode = void 0;
 const b_plus_node_1 = require("./b-plus-node");
 class InternalNode extends b_plus_node_1.BPlusNode {
-    get SmallestKey() {
-        return this._keys[0];
+    get Key() {
+        return this._key;
     }
-    constructor() {
+    get SmallestKey() {
+        return this._children[0].SmallestKey;
+    }
+    constructor(firstNode) {
         super(null, 0);
+        this._key = firstNode.SmallestKey;
     }
     Add(dataBlock) {
         throw new Error("Method not implemented.");

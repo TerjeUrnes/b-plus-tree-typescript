@@ -4,12 +4,16 @@ import { IKey } from "./ikey";
 export abstract class BPlusNode {
 
     /**
-     * Contains the keys.
-     * Size n + 1, last position is for the key that forces a split.
+     * Contains the children.
+     * Size n + 1, last position is for the child that forces a split.
      */
-    protected readonly _keys: Array<IKey>;
-
+    protected readonly _children: Array<BPlusNode | IDataBlock>;
+    protected _childrenCount: number = 0;
     protected _parentNode: WeakRef<BPlusNode> | null = null;
+
+    public get ChildrenCount(): number {
+        return this._childrenCount;
+    }
 
     public get ParentNode(): BPlusNode | null {
         if (this._parentNode === null) {
@@ -25,17 +29,25 @@ export abstract class BPlusNode {
         this._parentNode = new WeakRef(parent);
     }
 
-    public abstract get SmallestKey() : IKey;
+    public abstract get Key() : IKey;
+    public abstract get SmallestKey(): IKey
     public abstract Get(key: IKey) : IDataBlock | null;
     public abstract Add(dataBlock: IDataBlock) : void;
 
-    constructor(parent: BPlusNode | null, numKeys: number) {
+    constructor(parent: BPlusNode | null, order: number) {
         if (parent != null) {
             this._parentNode = new WeakRef(parent);
         }
-        this._keys = new Array<IKey>(numKeys + 1);
+        this._children = new Array<BPlusNode | IDataBlock>(order + 1);
     }
 
-
+    protected GetChildIndex(key: IKey) : number {
+        for (let i = this._childrenCount - 1; i >= 0; i--) {
+            if (key.CompareTo(this._children[i].Key) > 0) {
+                return i + 1;
+            }
+        }
+        return 0;
+    }
 
 }

@@ -17,6 +17,12 @@ export class BPlus {
 
     private _root: BPlusNode | null = null;
 
+    private _dataBlockCount: number = 0;
+
+    public get Count(): number {
+        return this._dataBlockCount;
+    }
+
     constructor(
         orderOfTheTree: number = this.ORDER_OF_THE_TREE,
         numChildMovedAtSplit: number = orderOfTheTree / 2,
@@ -39,6 +45,7 @@ export class BPlus {
                 this._minNumChildBeforeUnderflow, 
                 dataBlock);
         }
+        this._dataBlockCount++;
     }
 
     public Get(key: IKey) : IDataBlock | null {

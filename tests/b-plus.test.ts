@@ -1,7 +1,8 @@
 import { BPlus } from "../b-plus-src/b-plus";
+import { DataBlock } from "./datablock";
 import { Key } from "./key";
 
-describe('Testing empty instance', () => {
+describe('Empty instance', () => {
 
     var instance: BPlus
 
@@ -22,3 +23,22 @@ describe('Testing empty instance', () => {
         expect(rapport.StepCount).toBe(0);
     });
 });
+
+describe("Instance with 1 data block", () => {
+
+    var instance: BPlus
+    var key: Key = new Key(0);
+    var dataBlock: DataBlock;
+
+    beforeEach( () => {
+        instance = new BPlus();
+        dataBlock = new DataBlock(key);
+    });
+
+    test("Adding block increases count", () => {
+        instance.Add(dataBlock);
+        expect(instance.Count).toBe(1);
+    })
+
+    
+}) 
