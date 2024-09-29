@@ -10,7 +10,7 @@ describe("Testing new instance", () => {
 
     beforeEach(() => {
         dataBlock = new DataBlock(firstKey);
-        instance = new DataNode(4, 1, 1, dataBlock);
+        instance = new DataNode(null, 4, 1, 1, dataBlock);
     });
 
     test("Can init instance", () => {

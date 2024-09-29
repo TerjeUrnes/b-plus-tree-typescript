@@ -1,4 +1,5 @@
 import { BPlusNode } from "./b-plus-node";
+import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
 
 export class InternalNode extends BPlusNode {
@@ -8,6 +9,14 @@ export class InternalNode extends BPlusNode {
     }
     
     constructor() {
-        super(0);
+        super(null, 0);
+    }
+
+    public Add(dataBlock: IDataBlock): void {
+        throw new Error("Method not implemented.");
+    }
+
+    public Get(key: IKey): IDataBlock | null {
+        throw new Error("Method not implemented.");
     }
 }

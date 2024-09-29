@@ -7,7 +7,13 @@ class InternalNode extends b_plus_node_1.BPlusNode {
         return this._keys[0];
     }
     constructor() {
-        super(0);
+        super(null, 0);
+    }
+    Add(dataBlock) {
+        throw new Error("Method not implemented.");
+    }
+    Get(key) {
+        throw new Error("Method not implemented.");
     }
 }
 exports.InternalNode = InternalNode;

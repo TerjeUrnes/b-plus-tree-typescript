@@ -27,12 +27,37 @@ export class BPlus {
         this._minNumChildBeforeUnderflow = minNumChildBeforeUnderflow > 1 ? minNumChildBeforeUnderflow : 1;
     }
 
+    public Add(dataBlock: IDataBlock) : void {
+        if (this._root != null) {
+           this._root.Add(dataBlock);
+        }
+        else {
+            this._root = new DataNode(
+                null,
+                this._orderOfTheTree,
+                this._numChildMovedAtSplit, 
+                this._minNumChildBeforeUnderflow, 
+                dataBlock);
+        }
+    }
+
     public Get(key: IKey) : IDataBlock | null {
-        return null;
+        const result = this.GetFirstOnOrAfter(key);
+        if(result != null && key.CompareTo(result.Key) == 0) {
+            return result;
+        }
+        else {
+            return null;
+        }
     }
 
     public GetFirstOnOrAfter(key: IKey) : IDataBlock | null {
-        return null;
+        if (this._root != null) {
+            return this._root.Get(key);
+        }
+        else {
+            return null;
+        }
     }
 
     public GetWithRapport(key: IKey) : TraverseRapport {
