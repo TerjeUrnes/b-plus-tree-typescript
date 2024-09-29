@@ -2,3 +2,5 @@
 
 [Implementation](b-plus-src/) \
 [Implementation description](b-plus-src/README.md)
+
+[Compiled JavaScript files](js-build/)
