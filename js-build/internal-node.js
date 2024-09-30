@@ -16,6 +16,9 @@ class InternalNode extends b_plus_node_1.BPlusNode {
     Add(dataBlock) {
         throw new Error("Method not implemented.");
     }
+    Remove(key) {
+        return false;
+    }
     Get(key) {
         throw new Error("Method not implemented.");
     }

@@ -33,6 +33,20 @@ export class DataNode extends BPlusNode {
         return null;
     } 
 
+    public Remove(key: IKey) : boolean {
+        const index = this.GetChildIndex(key);
+        if (index >= this._childrenCount) {
+            return false;
+        }
+        else if (this._children[index].Key.CompareTo(key) == 0) {
+            this.RemoveChildAtIndex(index);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     public Get(key: IKey): IDataBlock | null {
         const index = this.GetChildIndex(key);
         if (index >= this._childrenCount) {

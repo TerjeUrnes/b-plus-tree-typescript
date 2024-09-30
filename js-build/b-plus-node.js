@@ -26,6 +26,12 @@ class BPlusNode {
         }
         this._children = new Array(order + 1);
     }
+    RemoveChildAtIndex(index) {
+        for (let i = index; i < this._childrenCount - 1; i++) {
+            this._children[i] = this._children[i + 1];
+        }
+        this._childrenCount--;
+    }
     GetChildIndex(key) {
         for (let i = this._childrenCount - 1; i >= 0; i--) {
             if (key.CompareTo(this._children[i].Key) > 0) {

@@ -33,12 +33,20 @@ export abstract class BPlusNode {
     public abstract get SmallestKey(): IKey
     public abstract Get(key: IKey) : IDataBlock | null;
     public abstract Add(dataBlock: IDataBlock) : void;
+    public abstract Remove(key: IKey) : boolean;
 
     constructor(parent: BPlusNode | null, order: number) {
         if (parent != null) {
             this._parentNode = new WeakRef(parent);
         }
         this._children = new Array<BPlusNode | IDataBlock>(order + 1);
+    }
+
+    protected RemoveChildAtIndex(index: number) : void {
+        for (let i = index; i < this._childrenCount - 1; i++) {
+            this._children[i] = this._children[i + 1];
+        }
+        this._childrenCount--;
     }
 
     protected GetChildIndex(key: IKey) : number {

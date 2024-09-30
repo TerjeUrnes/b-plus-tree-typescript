@@ -64,4 +64,35 @@ describe("Instance with 1 data block", () => {
         instance.Add(dataBlock);
         expect(instance.GetFirstOnOrAfter(new Key(11))).toBeNull();
     }); 
+
+    test("Removing the block decrease count", () => {
+        instance.Add(dataBlock);
+        expect(instance.Count).toBe(1);
+        instance.Remove(key);
+        expect(instance.Count).toBe(0);
+    });
+
+    test("Try to remove with wrong keys do not change count", () => {
+        instance.Add(dataBlock);
+        expect(instance.Count).toBe(1);
+        instance.Remove(new Key(1));
+        expect(instance.Count).toBe(1);
+        instance.Remove(new Key(5));
+        expect(instance.Count).toBe(1);
+        instance.Remove(new Key(12));
+        expect(instance.Count).toBe(1);
+    });
+
+    test("Get null after removing the block", () => {
+        instance.Add(dataBlock);
+        instance.Remove(key);
+        expect(instance.Get(key)).toBeNull();
+    });
+
+    test("Get block after removing with smaller key", () => {
+        instance.Add(dataBlock);
+        instance.Remove(new Key(3));
+        expect(instance.GetFirstOnOrAfter(new Key(3))).toBe(dataBlock);
+        expect(instance.Get(key)).toBe(dataBlock);
+    })
 }) 

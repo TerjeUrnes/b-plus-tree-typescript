@@ -23,6 +23,10 @@ export class InternalNode extends BPlusNode {
         throw new Error("Method not implemented.");
     }
 
+    public Remove(key: IKey): boolean {
+        return false;
+    }
+
     public Get(key: IKey): IDataBlock | null {
         throw new Error("Method not implemented.");
     }

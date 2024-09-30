@@ -10,12 +10,12 @@ class BPlus {
     get Count() {
         return this._dataBlockCount;
     }
-    constructor(orderOfTheTree = this.ORDER_OF_THE_TREE, numChildMovedAtSplit = orderOfTheTree / 2, minNumChildBeforeUnderflow = orderOfTheTree / 2) {
+    constructor(orderOfTheTree = this.ORDER_OF_THE_TREE, numChildAfterSplit = orderOfTheTree / 2, minNumChildBeforeUnderflow = orderOfTheTree / 2) {
         this.ORDER_OF_THE_TREE = 5;
         this._root = null;
         this._dataBlockCount = 0;
         this._orderOfTheTree = orderOfTheTree > 2 ? orderOfTheTree : 2;
-        this._numChildMovedAtSplit = numChildMovedAtSplit > 1 ? numChildMovedAtSplit : 1;
+        this._numChildAfterSplit = numChildAfterSplit > 1 ? numChildAfterSplit : 1;
         this._minNumChildBeforeUnderflow = minNumChildBeforeUnderflow > 1 ? minNumChildBeforeUnderflow : 1;
     }
     Add(dataBlock) {
@@ -23,9 +23,18 @@ class BPlus {
             this._root.Add(dataBlock);
         }
         else {
-            this._root = new data_node_1.DataNode(null, this._orderOfTheTree, this._numChildMovedAtSplit, this._minNumChildBeforeUnderflow, dataBlock);
+            this._root = new data_node_1.DataNode(null, this._orderOfTheTree, this._numChildAfterSplit, this._minNumChildBeforeUnderflow, dataBlock);
         }
         this._dataBlockCount++;
+    }
+    Remove(key) {
+        var hasRemoved = false;
+        if (this._root != null) {
+            hasRemoved = this._root.Remove(key);
+        }
+        if (hasRemoved) {
+            this._dataBlockCount--;
+        }
     }
     Get(key) {
         const result = this.GetFirstOnOrAfter(key);

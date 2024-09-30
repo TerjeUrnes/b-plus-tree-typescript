@@ -48,6 +48,16 @@ export class BPlus {
         this._dataBlockCount++;
     }
 
+    public Remove(key: IKey) : void {
+        var hasRemoved = false;
+        if (this._root != null) {
+            hasRemoved = this._root.Remove(key);
+        }
+        if (hasRemoved) {
+            this._dataBlockCount--;
+        }
+    }
+
     public Get(key: IKey) : IDataBlock | null {
         const result = this.GetFirstOnOrAfter(key);
         if(result != null && key.CompareTo(result.Key) == 0) {
