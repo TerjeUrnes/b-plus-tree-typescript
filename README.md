@@ -1,3 +1,5 @@
+v.0 - not complete.
+
 # B+ Tree implemented in TypeScript 
 
 [Implementation](b-plus-src/) \
