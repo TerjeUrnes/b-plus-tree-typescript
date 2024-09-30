@@ -27,7 +27,7 @@ describe('Empty instance', () => {
 describe("Instance with 1 data block", () => {
 
     var instance: BPlus
-    var key: Key = new Key(0);
+    var key: Key = new Key(10);
     var dataBlock: DataBlock;
 
     beforeEach( () => {
@@ -35,10 +35,33 @@ describe("Instance with 1 data block", () => {
         dataBlock = new DataBlock(key);
     });
 
-    test("Adding block increases count", () => {
+    test("Count has increased", () => {
+        expect(instance.Count).toBe(0);
         instance.Add(dataBlock);
         expect(instance.Count).toBe(1);
-    })
+    });
 
-    
+    test("Get the block back with same key", () => {
+        instance.Add(dataBlock);
+        expect(instance.Get(key)).toBe(dataBlock);
+        expect(instance.GetFirstOnOrAfter(key)).toBe(dataBlock);
+    });
+
+    test("Get null for other keys", () => {
+        instance.Add(dataBlock);
+        expect(instance.Get(new Key(1))).toBeNull();
+        expect(instance.Get(new Key(5))).toBeNull();
+        expect(instance.Get(new Key(11))).toBeNull();
+    });
+
+    test("Get the first block with a smaller keys", () => {
+        instance.Add(dataBlock);
+        expect(instance.GetFirstOnOrAfter(new Key(3))).toBe(dataBlock);
+        expect(instance.GetFirstOnOrAfter(new Key(9))).toBe(dataBlock);
+    });
+
+    test("Get null for a larger key", () => {
+        instance.Add(dataBlock);
+        expect(instance.GetFirstOnOrAfter(new Key(11))).toBeNull();
+    }); 
 }) 
