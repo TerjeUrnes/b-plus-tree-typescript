@@ -1,4 +1,5 @@
 import { BPlusNode } from "./b-plus-node";
+import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
 
@@ -23,8 +24,8 @@ export class InternalNode extends BPlusNode {
         throw new Error("Method not implemented.");
     }
 
-    public Remove(key: IKey): boolean {
-        return false;
+    public Remove(key: IKey): RemoveStatus {
+        return RemoveStatus.Unknown;
     }
 
     public Get(key: IKey): IDataBlock | null {

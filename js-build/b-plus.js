@@ -2,7 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BPlus = void 0;
 const data_node_1 = require("./data-node");
-const utils_1 = require("./utils");
+const traverserapport_1 = require("./dataclasses/traverserapport");
+const removestatus_1 = require("./enums/removestatus");
 /**
  * A B++ Tree implementation in TypeScript.
  */
@@ -28,12 +29,15 @@ class BPlus {
         this._dataBlockCount++;
     }
     Remove(key) {
-        var hasRemoved = false;
+        var removeStatus = removestatus_1.RemoveStatus.Unknown;
         if (this._root != null) {
-            hasRemoved = this._root.Remove(key);
+            removeStatus = this._root.Remove(key);
         }
-        if (hasRemoved) {
+        if (removeStatus != removestatus_1.RemoveStatus.NotFound && removeStatus != removestatus_1.RemoveStatus.Unknown) {
             this._dataBlockCount--;
+            if (this._dataBlockCount == 0) {
+                this._root = null;
+            }
         }
     }
     Get(key) {
@@ -54,7 +58,7 @@ class BPlus {
         }
     }
     GetWithRapport(key) {
-        return new utils_1.TraverseRapport();
+        return new traverserapport_1.TraverseRapport();
     }
 }
 exports.BPlus = BPlus;

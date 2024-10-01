@@ -1,4 +1,5 @@
 import { BPlusNode } from "./b-plus-node"
+import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
 
@@ -33,17 +34,19 @@ export class DataNode extends BPlusNode {
         return null;
     } 
 
-    public Remove(key: IKey) : boolean {
+    public Remove(key: IKey) : RemoveStatus {
         const index = this.GetChildIndex(key);
-        if (index >= this._childrenCount) {
-            return false;
-        }
-        else if (this._children[index].Key.CompareTo(key) == 0) {
+        if (index < this._childrenCount && this._children[index].Key.CompareTo(key) == 0) {
             this.RemoveChildAtIndex(index);
-            return true;
+            if (this._childrenCount < this._minBeforeUnderflow) {
+                return RemoveStatus.UnderflowAfterRemove;
+            }
+            else {
+                return RemoveStatus.RemovedComplete
+            }
         }
         else {
-            return false;
+            return RemoveStatus.NotFound;
         }
     }
 

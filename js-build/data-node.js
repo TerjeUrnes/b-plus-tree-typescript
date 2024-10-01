@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataNode = void 0;
 const b_plus_node_1 = require("./b-plus-node");
+const removestatus_1 = require("./enums/removestatus");
 class DataNode extends b_plus_node_1.BPlusNode {
     get Key() {
         return this.SmallestKey;
@@ -22,15 +23,17 @@ class DataNode extends b_plus_node_1.BPlusNode {
     }
     Remove(key) {
         const index = this.GetChildIndex(key);
-        if (index >= this._childrenCount) {
-            return false;
-        }
-        else if (this._children[index].Key.CompareTo(key) == 0) {
+        if (index < this._childrenCount && this._children[index].Key.CompareTo(key) == 0) {
             this.RemoveChildAtIndex(index);
-            return true;
+            if (this._childrenCount < this._minBeforeUnderflow) {
+                return removestatus_1.RemoveStatus.UnderflowAfterRemove;
+            }
+            else {
+                return removestatus_1.RemoveStatus.RemovedComplete;
+            }
         }
         else {
-            return false;
+            return removestatus_1.RemoveStatus.NotFound;
         }
     }
     Get(key) {

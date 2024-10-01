@@ -1,3 +1,4 @@
+import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
 
@@ -33,7 +34,7 @@ export abstract class BPlusNode {
     public abstract get SmallestKey(): IKey
     public abstract Get(key: IKey) : IDataBlock | null;
     public abstract Add(dataBlock: IDataBlock) : void;
-    public abstract Remove(key: IKey) : boolean;
+    public abstract Remove(key: IKey) : RemoveStatus;
 
     constructor(parent: BPlusNode | null, order: number) {
         if (parent != null) {

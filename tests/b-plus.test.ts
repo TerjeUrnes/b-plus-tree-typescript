@@ -94,5 +94,17 @@ describe("Instance with 1 data block", () => {
         instance.Remove(new Key(3));
         expect(instance.GetFirstOnOrAfter(new Key(3))).toBe(dataBlock);
         expect(instance.Get(key)).toBe(dataBlock);
-    })
+    });
+
+    test("Get block after removing with bigger key", () => {
+        instance.Add(dataBlock);
+        instance.Remove(new Key(11));
+        expect(instance.Get(key)).toBe(dataBlock);
+    });
+
+    test("Get null after removing with same key", () => {
+        instance.Add(dataBlock);
+        instance.Remove(key);
+        expect(instance.Get(key)).toBeNull();
+    });
 }) 

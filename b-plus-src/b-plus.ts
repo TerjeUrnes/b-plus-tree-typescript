@@ -2,7 +2,8 @@ import { BPlusNode } from "./b-plus-node";
 import { DataNode } from "./data-node";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
-import { TraverseRapport } from "./utils";
+import { TraverseRapport } from "./dataclasses/traverserapport";
+import { RemoveStatus } from "./enums/removestatus";
 
 /**
  * A B++ Tree implementation in TypeScript.
@@ -49,12 +50,15 @@ export class BPlus {
     }
 
     public Remove(key: IKey) : void {
-        var hasRemoved = false;
+        var removeStatus: RemoveStatus = RemoveStatus.Unknown;
         if (this._root != null) {
-            hasRemoved = this._root.Remove(key);
+            removeStatus = this._root.Remove(key);
         }
-        if (hasRemoved) {
+        if (removeStatus != RemoveStatus.NotFound && removeStatus != RemoveStatus.Unknown) {
             this._dataBlockCount--;
+            if (this._dataBlockCount == 0) {
+                this._root = null;
+            } 
         }
     }
 
