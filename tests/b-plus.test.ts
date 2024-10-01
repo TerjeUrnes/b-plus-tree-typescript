@@ -281,18 +281,30 @@ describe("Instance with 10 data blocks in order 10 tree", () => {
 //     });
 
 //     test("Count has increased, Added sequential", () => {
+//         var startTime = performance.now()
 //         expect(instance.Count).toBe(0);
-//         for (let i = 0; i < 10000; i++) {
+//         for (let i = 0; i < 10000000; i++) {
 //             instance.Add(dataBlocks[i]);
 //         }
-//         expect(instance.Count).toBe(10000);
+//         expect(instance.Count).toBe(10000000);
+//         var endTime = performance.now()
+
+//         console.log(`Call to doSomething took ${endTime - startTime} milliseconds`)
 //     }, 100000);
 
 //     test("Count has increased. Added non-sequential", () => {
 //         expect(instance.Count).toBe(0);
-//         for (let i = 100000 - 1; i >= 0; i--) {
+//         for (let i = 0; i < 100000; i++) {
 //             instance.Add(dataBlocks[i]);
 //         }
 //         expect(instance.Count).toBe(100000);
+//         var startTime = performance.now()
+//         for (let i = 0; i < 100000; i++) {
+//             instance.Remove(dataBlocks[i].Key);
+//         }
+//         var endTime = performance.now()
+//         expect(instance.Count).toBe(0);
+
+//         console.log(`Call to remove took ${endTime - startTime} milliseconds`)
 //     }, 10000);
 // })

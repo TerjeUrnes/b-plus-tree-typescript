@@ -20,6 +20,7 @@ class DataNode extends b_plus_node_1.BPlusNode {
     Add(dataBlock) {
         const index = this.GetChildIndex(dataBlock.Key);
         this.InsertChildAtIndex(index, dataBlock);
+        this.UpdateLinkingAfterInsert(index);
         return null;
     }
     Remove(key) {
@@ -51,6 +52,20 @@ class DataNode extends b_plus_node_1.BPlusNode {
             path.push(this._children[i].Key.ToString());
         }
         rapport.path.push(path);
+    }
+    UpdateLinkingAfterInsert(index) {
+        if (index > 0) {
+            const previous = this._children[index - 1];
+            const current = this._children[index];
+            previous.Next = current;
+            current.Previous = previous;
+        }
+        if (index < this._childrenCount - 1) {
+            const current = this._children[index];
+            const next = this._children[index + 1];
+            current.Next = next;
+            next.Previous = current;
+        }
     }
 }
 exports.DataNode = DataNode;

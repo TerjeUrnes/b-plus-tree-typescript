@@ -47,3 +47,25 @@ describe("Testing new instance", () => {
         expect(instance.Get(biggerKey)).toBeNull();
     })
 });
+
+describe("Linking between two blocks", () => {
+
+    var firstKey = new Key(10);
+    var secondKey = new Key(20);
+    var instance: DataNode;
+    var dataBlock: DataBlock
+    var secondDataBlock: DataBlock
+
+    beforeEach(() => {
+        dataBlock = new DataBlock(firstKey);
+        secondDataBlock = new DataBlock(secondKey);
+        instance = new DataNode(null, 4, 1, 1, dataBlock);
+        instance.Add(secondDataBlock);
+    });
+
+    test("Can get the second data block", () => {
+        expect(dataBlock.Next).toBe(secondDataBlock);
+        expect(secondDataBlock.Previous).toBe(dataBlock);
+    })
+
+});
