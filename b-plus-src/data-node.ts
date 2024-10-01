@@ -31,7 +31,8 @@ export class DataNode extends BPlusNode {
     }
 
     public Add(dataBlock: IDataBlock) : BPlusNode | null {
-        this._children[this._childrenCount++] = dataBlock;
+        const index = this.GetChildIndex(dataBlock.Key);
+        this.InsertChildAtIndex(index, dataBlock);
         return null;
     } 
 

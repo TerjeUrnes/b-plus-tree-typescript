@@ -18,7 +18,8 @@ class DataNode extends b_plus_node_1.BPlusNode {
         this._children[this._childrenCount++] = firstBlock;
     }
     Add(dataBlock) {
-        this._children[this._childrenCount++] = dataBlock;
+        const index = this.GetChildIndex(dataBlock.Key);
+        this.InsertChildAtIndex(index, dataBlock);
         return null;
     }
     Remove(key) {

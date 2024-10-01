@@ -140,18 +140,159 @@ describe("Instance with 2 data block", () => {
         dataBlock2 = new DataBlock(key2);
     });
 
-    test("Count has increased", () => {
+    test("Count has increased. Added sequential", () => {
         expect(instance.Count).toBe(0);
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
         expect(instance.Count).toBe(2);
     });
 
-    test("Has correct traverse path", () => {
+    test("Count has increased. Added non-sequential", () => {
+        expect(instance.Count).toBe(0);
+        instance.Add(dataBlock2);
+        instance.Add(dataBlock1);
+        expect(instance.Count).toBe(2);
+    });
+
+    test("Get the block back with same key", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        expect(instance.Get(key1)).toBe(dataBlock1);
+        expect(instance.Get(key2)).toBe(dataBlock2);
+    });
+
+    test("Get back null when using a key in between", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        expect(instance.Get(new Key(15))).toBeNull;
+    }); 
+
+    test("Get first gives back second block when using a bigger key", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        expect(instance.GetFirstOnOrAfter(new Key(25))).toBeNull();
+    });
+
+    test("Get first gives back second block when using a key in between", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        expect(instance.GetFirstOnOrAfter(new Key(15))).toBe(dataBlock2);
+    }); 
+
+    test("Get first gives back first block when using a smaller key", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        expect(instance.GetFirstOnOrAfter(new Key(5))).toBe(dataBlock1);
+    }); 
+
+    test("Removing the block gives correct count. Removed sequential", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        expect(instance.Count).toBe(2);
+        instance.Remove(key1);
+        expect(instance.Count).toBe(1);
+        instance.Remove(key2);
+        expect(instance.Count).toBe(0);
+    });
+
+    test("Has correct traverse path. Added sequential", () => {
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
         var rapport = instance.GetWithRapport(key1);
         expect(rapport.path).toStrictEqual([["10","20"]]);
     });
 
+    test("Has correct traverse path. Added non-sequential", () => {
+        instance.Add(dataBlock2);
+        instance.Add(dataBlock1);
+        var rapport = instance.GetWithRapport(key1);
+        expect(rapport.path).toStrictEqual([["10","20"]]);
+    });
+
+    test("Has correct traverse path. Removed sequential", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        instance.Remove(key1);
+        var rapport = instance.GetWithRapport(key2);
+        expect(rapport.path).toStrictEqual([["20"]]);
+        instance.Remove(key2);
+        var rapport = instance.GetWithRapport(key1);
+        expect(rapport.path).toStrictEqual([]);
+    });
+
+    test("Has correct traverse path. Removed non-sequential", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        instance.Remove(key2);
+        var rapport = instance.GetWithRapport(key1);
+        expect(rapport.path).toStrictEqual([["10"]]);
+        instance.Remove(key1);
+        var rapport = instance.GetWithRapport(key2);
+        expect(rapport.path).toStrictEqual([]);
+    });
 });
+
+describe("Instance with 10 data blocks in order 10 tree", () => {
+    var instance: BPlus
+    var dataBlocks: DataBlock[] = [];
+
+    beforeEach( () => {
+        instance = new BPlus(10, 5, 5);
+        for (let i = 0; i < 10; i++) {
+            dataBlocks.push(new DataBlock(new Key(i)));
+        }
+    });
+
+    test("Count has increased", () => {
+        expect(instance.Count).toBe(0);
+        for (let i = 0; i < 10; i++) {
+            instance.Add(dataBlocks[i]);
+        }
+        expect(instance.Count).toBe(10);
+    });
+
+    test("Has correct traverse path. Added sequential", () => {
+        for (let i = 0; i < 10; i++) {
+            instance.Add(dataBlocks[i]);
+        }
+        var rapport = instance.GetWithRapport(new Key(5));
+        expect(rapport.path).toStrictEqual([["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]]);
+    })
+
+    test("Has correct traverse path. Added non-sequential", () => {
+        for (let i = 9; i >= 0; i--) {
+            instance.Add(dataBlocks[i]);
+        }
+        var rapport = instance.GetWithRapport(new Key(5));
+        expect(rapport.path).toStrictEqual([["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]]);
+    })
+})
+
+// describe("Testing whit 1000000 in 1000000 order tree", () => {
+
+//     var instance: BPlus
+//     var dataBlocks: DataBlock[] = new Array(20000000);
+
+//     beforeEach( () => {
+//         instance = new BPlus(10000000, 5000000, 5000000);
+//         for (let i = 0; i < 10000000; i++) {
+//             dataBlocks[i] = (new DataBlock(new Key(i)));
+//         }
+//     });
+
+//     test("Count has increased, Added sequential", () => {
+//         expect(instance.Count).toBe(0);
+//         for (let i = 0; i < 10000; i++) {
+//             instance.Add(dataBlocks[i]);
+//         }
+//         expect(instance.Count).toBe(10000);
+//     }, 100000);
+
+//     test("Count has increased. Added non-sequential", () => {
+//         expect(instance.Count).toBe(0);
+//         for (let i = 100000 - 1; i >= 0; i--) {
+//             instance.Add(dataBlocks[i]);
+//         }
+//         expect(instance.Count).toBe(100000);
+//     }, 10000);
+// })

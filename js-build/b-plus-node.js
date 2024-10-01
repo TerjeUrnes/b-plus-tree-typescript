@@ -26,6 +26,13 @@ class BPlusNode {
         }
         this._children = new Array(order + 1);
     }
+    InsertChildAtIndex(index, child) {
+        for (let i = this._childrenCount; i > index; i--) {
+            this._children[i] = this._children[i - 1];
+        }
+        this._children[index] = child;
+        this._childrenCount++;
+    }
     RemoveChildAtIndex(index) {
         for (let i = index; i < this._childrenCount - 1; i++) {
             this._children[i] = this._children[i + 1];

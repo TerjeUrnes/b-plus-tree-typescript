@@ -45,6 +45,14 @@ export abstract class BPlusNode {
         this._children = new Array<BPlusNode | IDataBlock>(order + 1);
     }
 
+    protected InsertChildAtIndex(index: number, child: BPlusNode | IDataBlock) : void {
+        for (let i = this._childrenCount; i > index; i--) {
+            this._children[i] = this._children[i - 1];
+        }
+        this._children[index] = child;
+        this._childrenCount++;
+    }
+
     protected RemoveChildAtIndex(index: number) : void {
         for (let i = index; i < this._childrenCount - 1; i++) {
             this._children[i] = this._children[i + 1];
