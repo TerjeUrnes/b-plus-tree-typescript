@@ -9,3 +9,5 @@
 | **IKey** <br>  ikey.ts | Interface. The key that are used have to implement this. |
 | **IDataBlock** <br> idatablock.ts | Interface |
 | **TraverseRapport** <br> utils.ts | |
+
+![Alt text](./uml.drawio.svg)
