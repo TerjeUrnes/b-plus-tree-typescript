@@ -14,4 +14,8 @@ export class Key implements IKey {
         }
         return -1;
     }
+
+    ToString(): string {
+        return this._key.toString();
+    }
 }

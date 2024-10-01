@@ -58,7 +58,11 @@ class BPlus {
         }
     }
     GetWithRapport(key) {
-        return new traverserapport_1.TraverseRapport();
+        var rapport = new traverserapport_1.TraverseRapport();
+        if (this._root != null) {
+            this._root.GetWithRapport(key, rapport);
+        }
+        return rapport;
     }
 }
 exports.BPlus = BPlus;

@@ -23,5 +23,8 @@ class InternalNode extends b_plus_node_1.BPlusNode {
     Get(key) {
         throw new Error("Method not implemented.");
     }
+    GetWithRapport(key, rapport) {
+        throw new Error("Method not implemented.");
+    }
 }
 exports.InternalNode = InternalNode;

@@ -82,6 +82,10 @@ export class BPlus {
     }
 
     public GetWithRapport(key: IKey) : TraverseRapport {
-        return new TraverseRapport();
+        var rapport = new TraverseRapport();
+        if (this._root != null) {
+            this._root.GetWithRapport(key, rapport);
+        }
+        return rapport;
     }
 }

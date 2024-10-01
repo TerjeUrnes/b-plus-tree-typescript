@@ -1,4 +1,5 @@
 import { BPlusNode } from "./b-plus-node";
+import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
@@ -29,6 +30,10 @@ export class InternalNode extends BPlusNode {
     }
 
     public Get(key: IKey): IDataBlock | null {
+        throw new Error("Method not implemented.");
+    }
+    
+    public GetWithRapport(key: IKey, rapport: TraverseRapport): void {
         throw new Error("Method not implemented.");
     }
 }

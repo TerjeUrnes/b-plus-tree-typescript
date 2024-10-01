@@ -22,6 +22,11 @@ describe('Empty instance', () => {
         var rapport = instance.GetWithRapport(new Key(0));
         expect(rapport.StepCount).toBe(0);
     });
+
+    test("Has empty traverse path", () => {
+        var rapport = instance.GetWithRapport(new Key(0));
+        expect(rapport.path).toStrictEqual([]);
+    });
 });
 
 describe("Instance with 1 data block", () => {
@@ -107,4 +112,46 @@ describe("Instance with 1 data block", () => {
         instance.Remove(key);
         expect(instance.Get(key)).toBeNull();
     });
+
+    test("Has step through 1 node", () => {
+        instance.Add(dataBlock);
+        var rapport = instance.GetWithRapport(key);
+        expect(rapport.StepCount).toBe(1);
+    })
+
+    test("Has correct traverse path", () => {
+        instance.Add(dataBlock);
+        var rapport = instance.GetWithRapport(key);
+        expect(rapport.path).toStrictEqual([["10"]]);
+    });
 }) 
+
+describe("Instance with 2 data block", () => {
+
+    var instance: BPlus
+    var key1: Key = new Key(10);
+    var key2: Key = new Key(20);
+    var dataBlock1: DataBlock;
+    var dataBlock2: DataBlock;
+
+    beforeEach( () => {
+        instance = new BPlus();
+        dataBlock1 = new DataBlock(key1);
+        dataBlock2 = new DataBlock(key2);
+    });
+
+    test("Count has increased", () => {
+        expect(instance.Count).toBe(0);
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        expect(instance.Count).toBe(2);
+    });
+
+    test("Has correct traverse path", () => {
+        instance.Add(dataBlock1);
+        instance.Add(dataBlock2);
+        var rapport = instance.GetWithRapport(key1);
+        expect(rapport.path).toStrictEqual([["10","20"]]);
+    });
+
+});

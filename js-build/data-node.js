@@ -43,5 +43,13 @@ class DataNode extends b_plus_node_1.BPlusNode {
         }
         return this._children[index];
     }
+    GetWithRapport(key, rapport) {
+        rapport.StepCount++;
+        var path = new Array();
+        for (var i = 0; i < this._childrenCount; i++) {
+            path.push(this._children[i].Key.ToString());
+        }
+        rapport.path.push(path);
+    }
 }
 exports.DataNode = DataNode;

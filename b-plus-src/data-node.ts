@@ -1,4 +1,5 @@
 import { BPlusNode } from "./b-plus-node"
+import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
@@ -56,5 +57,14 @@ export class DataNode extends BPlusNode {
             return null;
         }
         return this._children[index] as IDataBlock;
+    }
+
+    public GetWithRapport(key: IKey, rapport: TraverseRapport): void {
+        rapport.StepCount++;
+        var path = new Array<string>(); 
+        for (var i = 0; i < this._childrenCount; i++) {
+            path.push(this._children[i].Key.ToString());
+        }
+        rapport.path.push(path);
     }
 }

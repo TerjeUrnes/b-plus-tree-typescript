@@ -1,3 +1,4 @@
+import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
@@ -35,6 +36,7 @@ export abstract class BPlusNode {
     public abstract Get(key: IKey) : IDataBlock | null;
     public abstract Add(dataBlock: IDataBlock) : void;
     public abstract Remove(key: IKey) : RemoveStatus;
+    public abstract GetWithRapport(key: IKey, rapport: TraverseRapport) : void;
 
     constructor(parent: BPlusNode | null, order: number) {
         if (parent != null) {
