@@ -14,9 +14,13 @@ export abstract class BPlusNode {
     protected _childrenCount: number = 0;
     protected _parentNode: WeakRef<BPlusNode> | null = null;
 
+    protected readonly _treeOrder: number;
+    protected readonly _afterAtSplit: number;
+    protected readonly _minBeforeUnderflow: number;
+
     public get ChildrenCount(): number {
         return this._childrenCount;
-    }
+    }  
 
     public get ParentNode(): BPlusNode | null {
         if (this._parentNode === null) {
@@ -34,17 +38,21 @@ export abstract class BPlusNode {
 
     public abstract get Key() : IKey;
     public abstract get SmallestKey(): IKey
+    public abstract get DataBlockCount(): number
     public abstract Get(key: IKey) : IDataBlock | null;
     public abstract GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint) : IDataBlock[];
-    public abstract Add(dataBlock: IDataBlock) : void;
+    public abstract Add(dataBlock: IDataBlock) : BPlusNode | null;
     public abstract Remove(key: IKey) : RemoveStatus;
     public abstract GetWithRapport(key: IKey, rapport: TraverseRapport) : void;
 
-    constructor(parent: BPlusNode | null, order: number) {
+    constructor(parent: BPlusNode | null, order: number, afterAtSplit: number, minBeforeUnderflow: number,) {
         if (parent != null) {
             this._parentNode = new WeakRef(parent);
         }
         this._children = new Array<BPlusNode | IDataBlock>(order + 1);
+        this._treeOrder = order;
+        this._afterAtSplit = afterAtSplit;
+        this._minBeforeUnderflow = minBeforeUnderflow;
     }
 
     protected InsertChildAtIndex(index: number, child: BPlusNode | IDataBlock) : void {
@@ -69,6 +77,15 @@ export abstract class BPlusNode {
             }
         }
         return 0;
+    }
+
+    protected SplitNode(newRightNode: BPlusNode) : void {
+        for (let i = this._afterAtSplit; i < this._childrenCount; i++) {
+            newRightNode.Add(this._children[i] as IDataBlock);
+        }
+        for (let i = this._childrenCount - 1; i >= this._afterAtSplit; i--) {
+            this.RemoveChildAtIndex(i);
+        }
     }
 
 }

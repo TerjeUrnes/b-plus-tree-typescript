@@ -4,13 +4,10 @@ import { RangeToEndpoint } from "./enums/rangetoendpoint";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
+import { InternalNode } from "./internal-node";
 
 
 export class DataNode extends BPlusNode {
-
-    private readonly _numBlocks: number;
-    private readonly _afterAtSplit: number;
-    private readonly _minBeforeUnderflow: number;
 
     public get Key() : IKey {
         return this.SmallestKey;
@@ -20,14 +17,15 @@ export class DataNode extends BPlusNode {
         return this._children[0].Key;
     }
 
+    public get DataBlockCount(): number {
+        return this._childrenCount;
+    } 
+
     constructor(parent: BPlusNode | null, 
         numBlocks: number, afterAtSplit: number, minBeforeUnderflow: number,
         firstBlock: IDataBlock
     ) {
-        super(parent, numBlocks);
-        this._numBlocks = numBlocks;
-        this._afterAtSplit = afterAtSplit;
-        this._minBeforeUnderflow = minBeforeUnderflow;
+        super(parent, numBlocks, afterAtSplit, minBeforeUnderflow);
         this._children[this._childrenCount++] = firstBlock;
     }
 
@@ -35,6 +33,9 @@ export class DataNode extends BPlusNode {
         const index = this.GetChildIndex(dataBlock.Key);
         this.InsertChildAtIndex(index, dataBlock);
         this.UpdateLinkingAfterInsert(index);
+        if (this._childrenCount > this._treeOrder) {
+            return this.SplitDataNode();
+        }
         return null;
     } 
 
@@ -118,6 +119,20 @@ export class DataNode extends BPlusNode {
             current.Next = next;
             next.Previous = current;
         }
+    }
+
+    private SplitDataNode() : BPlusNode | DataNode {
+        const parent = this.ParentNode;
+        const newRightNode = new DataNode(parent, this._treeOrder, this._afterAtSplit, 
+                        this._minBeforeUnderflow, this._children[this._afterAtSplit] as IDataBlock);
+        this.RemoveChildAtIndex(this._afterAtSplit);
+        this.SplitNode(newRightNode);
+        if (parent == null) {
+            const newParent = new InternalNode(parent, this._treeOrder, this._afterAtSplit, this._minBeforeUnderflow, this);
+            newParent.AddNode(newRightNode);
+            return newParent;
+        }
+        return newRightNode;
     }
 }
 

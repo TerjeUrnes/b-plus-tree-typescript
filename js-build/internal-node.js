@@ -10,12 +10,32 @@ class InternalNode extends b_plus_node_1.BPlusNode {
     get SmallestKey() {
         return this._children[0].SmallestKey;
     }
-    constructor(firstNode) {
-        super(null, 0);
-        this._key = firstNode.SmallestKey;
+    get DataBlockCount() {
+        let count = 0;
+        for (let i = 0; i < this._childrenCount; i++) {
+            count += this._children[i].DataBlockCount;
+        }
+        return count;
+    }
+    constructor(parent, numBlocks, afterAtSplit, minBeforeUnderflow, firstNode) {
+        super(parent, numBlocks, afterAtSplit, minBeforeUnderflow);
+        this._children[this._childrenCount++] = firstNode;
+        this._key = this.SmallestKey;
     }
     Add(dataBlock) {
-        throw new Error("Method not implemented.");
+        const index = this.GetChildIndex(dataBlock.Key);
+        const result = this._children[index].Add(dataBlock);
+        if (result != null) {
+            this.InsertChildAtIndex(index + 1, result);
+        }
+        if (this._childrenCount > this._treeOrder) {
+            return this.SplitInternalNode();
+        }
+        return null;
+    }
+    AddNode(node) {
+        const index = this.GetChildIndex(node.SmallestKey);
+        this.InsertChildAtIndex(index, node);
     }
     Remove(key) {
         return removestatus_1.RemoveStatus.Unknown;
@@ -28,7 +48,17 @@ class InternalNode extends b_plus_node_1.BPlusNode {
         return this._children[index].GetRange(fromKey, toKey, toEndpoint);
     }
     GetWithRapport(key, rapport) {
-        throw new Error("Method not implemented.");
+        rapport.StepCount++;
+        var path = new Array();
+        for (var i = 0; i < this._childrenCount; i++) {
+            path.push(this._children[i].Key.ToString());
+        }
+        rapport.path.push(path);
+        const index = this.GetChildIndex(key);
+        this._children[index].GetWithRapport(key, rapport);
+    }
+    SplitInternalNode() {
+        return this;
     }
 }
 exports.InternalNode = InternalNode;

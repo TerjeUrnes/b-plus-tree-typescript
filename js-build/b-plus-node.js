@@ -18,13 +18,16 @@ class BPlusNode {
     set ParentNode(parent) {
         this._parentNode = new WeakRef(parent);
     }
-    constructor(parent, order) {
+    constructor(parent, order, afterAtSplit, minBeforeUnderflow) {
         this._childrenCount = 0;
         this._parentNode = null;
         if (parent != null) {
             this._parentNode = new WeakRef(parent);
         }
         this._children = new Array(order + 1);
+        this._treeOrder = order;
+        this._afterAtSplit = afterAtSplit;
+        this._minBeforeUnderflow = minBeforeUnderflow;
     }
     InsertChildAtIndex(index, child) {
         for (let i = this._childrenCount; i > index; i--) {
@@ -46,6 +49,14 @@ class BPlusNode {
             }
         }
         return 0;
+    }
+    SplitNode(newRightNode) {
+        for (let i = this._afterAtSplit; i < this._childrenCount; i++) {
+            newRightNode.Add(this._children[i]);
+        }
+        for (let i = this._childrenCount - 1; i >= this._afterAtSplit; i--) {
+            this.RemoveChildAtIndex(i);
+        }
     }
 }
 exports.BPlusNode = BPlusNode;

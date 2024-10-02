@@ -4,6 +4,7 @@ exports.DataNode = void 0;
 const b_plus_node_1 = require("./b-plus-node");
 const rangetoendpoint_1 = require("./enums/rangetoendpoint");
 const removestatus_1 = require("./enums/removestatus");
+const internal_node_1 = require("./internal-node");
 class DataNode extends b_plus_node_1.BPlusNode {
     get Key() {
         return this.SmallestKey;
@@ -11,17 +12,20 @@ class DataNode extends b_plus_node_1.BPlusNode {
     get SmallestKey() {
         return this._children[0].Key;
     }
+    get DataBlockCount() {
+        return this._childrenCount;
+    }
     constructor(parent, numBlocks, afterAtSplit, minBeforeUnderflow, firstBlock) {
-        super(parent, numBlocks);
-        this._numBlocks = numBlocks;
-        this._afterAtSplit = afterAtSplit;
-        this._minBeforeUnderflow = minBeforeUnderflow;
+        super(parent, numBlocks, afterAtSplit, minBeforeUnderflow);
         this._children[this._childrenCount++] = firstBlock;
     }
     Add(dataBlock) {
         const index = this.GetChildIndex(dataBlock.Key);
         this.InsertChildAtIndex(index, dataBlock);
         this.UpdateLinkingAfterInsert(index);
+        if (this._childrenCount > this._treeOrder) {
+            return this.SplitDataNode();
+        }
         return null;
     }
     Remove(key) {
@@ -99,6 +103,18 @@ class DataNode extends b_plus_node_1.BPlusNode {
             current.Next = next;
             next.Previous = current;
         }
+    }
+    SplitDataNode() {
+        const parent = this.ParentNode;
+        const newRightNode = new DataNode(parent, this._treeOrder, this._afterAtSplit, this._minBeforeUnderflow, this._children[this._afterAtSplit]);
+        this.RemoveChildAtIndex(this._afterAtSplit);
+        this.SplitNode(newRightNode);
+        if (parent == null) {
+            const newParent = new internal_node_1.InternalNode(parent, this._treeOrder, this._afterAtSplit, this._minBeforeUnderflow, this);
+            newParent.AddNode(newRightNode);
+            return newParent;
+        }
+        return newRightNode;
     }
 }
 exports.DataNode = DataNode;
