@@ -4,6 +4,7 @@ import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
 import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RemoveStatus } from "./enums/removestatus";
+import { RangeToEndpoint } from "./enums/rangetoendpoint";
 
 /**
  * A B++ Tree implementation in TypeScript.
@@ -70,6 +71,13 @@ export class BPlus {
         else {
             return null;
         }
+    }
+
+    public GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint) : IDataBlock[] | null {
+        if (this._root != null) {
+            return this._root.GetRange(fromKey, toKey, toEndpoint);
+        }
+        return null;
     }
 
     public GetFirstOnOrAfter(key: IKey) : IDataBlock | null {

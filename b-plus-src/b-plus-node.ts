@@ -1,4 +1,5 @@
 import { TraverseRapport } from "./dataclasses/traverserapport";
+import { RangeToEndpoint } from "./enums/rangetoendpoint";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
@@ -34,6 +35,7 @@ export abstract class BPlusNode {
     public abstract get Key() : IKey;
     public abstract get SmallestKey(): IKey
     public abstract Get(key: IKey) : IDataBlock | null;
+    public abstract GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint) : IDataBlock[];
     public abstract Add(dataBlock: IDataBlock) : void;
     public abstract Remove(key: IKey) : RemoveStatus;
     public abstract GetWithRapport(key: IKey, rapport: TraverseRapport) : void;

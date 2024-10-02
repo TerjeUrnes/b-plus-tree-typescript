@@ -1,5 +1,6 @@
 import { BPlusNode } from "./b-plus-node";
 import { TraverseRapport } from "./dataclasses/traverserapport";
+import { RangeToEndpoint } from "./enums/rangetoendpoint";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
@@ -33,7 +34,13 @@ export class InternalNode extends BPlusNode {
         throw new Error("Method not implemented.");
     }
     
+    public GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint): IDataBlock[] {
+        const index = this.GetChildIndex(fromKey);
+        return (this._children[index] as BPlusNode).GetRange(fromKey, toKey, toEndpoint);
+    }
+
     public GetWithRapport(key: IKey, rapport: TraverseRapport): void {
         throw new Error("Method not implemented.");
     }
+    
 }

@@ -1,5 +1,6 @@
 import { BPlusNode } from "./b-plus-node"
 import { TraverseRapport } from "./dataclasses/traverserapport";
+import { RangeToEndpoint } from "./enums/rangetoendpoint";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
@@ -61,6 +62,40 @@ export class DataNode extends BPlusNode {
         return this._children[index] as IDataBlock;
     }
 
+    public GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint): IDataBlock[] {
+        const index = this.GetChildIndex(fromKey);
+        let count = 0;
+        if (index >= 0 && index < this._childrenCount) {
+            let next = (this._children[index] as IDataBlock).Next;
+            while (next != null && this.HasGotLastBlock(toEndpoint, next, toKey) == false) {
+                count++;
+                next = next.Next;
+            }
+        }
+        const range = new Array<IDataBlock>(count);
+        let next = this._children[index] as IDataBlock;
+        for (let i = 0; i < count; i++) {
+            range[i] = next;
+            if (next.Next != null) {
+                next = next.Next as IDataBlock;
+            }
+            else {
+                break;
+            }
+        }
+        return range;
+    }
+
+    private HasGotLastBlock(endpoint: RangeToEndpoint, next: IDataBlock, toKey: IKey): boolean {
+        if(endpoint == RangeToEndpoint.Included && next.Key.CompareTo(toKey) <= 0) {
+            return false;
+        }
+        else if (endpoint == RangeToEndpoint.Excluded && next.Key.CompareTo(toKey) < 0) {
+            return false;
+        }
+        return false;
+    }
+
     public GetWithRapport(key: IKey, rapport: TraverseRapport): void {
         rapport.StepCount++;
         var path = new Array<string>(); 
@@ -85,3 +120,4 @@ export class DataNode extends BPlusNode {
         }
     }
 }
+

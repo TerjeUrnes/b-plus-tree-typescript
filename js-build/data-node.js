@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DataNode = void 0;
 const b_plus_node_1 = require("./b-plus-node");
+const rangetoendpoint_1 = require("./enums/rangetoendpoint");
 const removestatus_1 = require("./enums/removestatus");
 class DataNode extends b_plus_node_1.BPlusNode {
     get Key() {
@@ -44,6 +45,38 @@ class DataNode extends b_plus_node_1.BPlusNode {
             return null;
         }
         return this._children[index];
+    }
+    GetRange(fromKey, toKey, toEndpoint) {
+        const index = this.GetChildIndex(fromKey);
+        let count = 0;
+        if (index >= 0 && index < this._childrenCount) {
+            let next = this._children[index].Next;
+            while (next != null && this.HasGotLastBlock(toEndpoint, next, toKey) == false) {
+                count++;
+                next = next.Next;
+            }
+        }
+        const range = new Array(count);
+        let next = this._children[index];
+        for (let i = 0; i < count; i++) {
+            range[i] = next;
+            if (next.Next != null) {
+                next = next.Next;
+            }
+            else {
+                break;
+            }
+        }
+        return range;
+    }
+    HasGotLastBlock(endpoint, next, toKey) {
+        if (endpoint == rangetoendpoint_1.RangeToEndpoint.Included && next.Key.CompareTo(toKey) <= 0) {
+            return false;
+        }
+        else if (endpoint == rangetoendpoint_1.RangeToEndpoint.Excluded && next.Key.CompareTo(toKey) < 0) {
+            return false;
+        }
+        return false;
     }
     GetWithRapport(key, rapport) {
         rapport.StepCount++;

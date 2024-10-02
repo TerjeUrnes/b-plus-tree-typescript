@@ -23,6 +23,10 @@ class InternalNode extends b_plus_node_1.BPlusNode {
     Get(key) {
         throw new Error("Method not implemented.");
     }
+    GetRange(fromKey, toKey, toEndpoint) {
+        const index = this.GetChildIndex(fromKey);
+        return this._children[index].GetRange(fromKey, toKey, toEndpoint);
+    }
     GetWithRapport(key, rapport) {
         throw new Error("Method not implemented.");
     }
