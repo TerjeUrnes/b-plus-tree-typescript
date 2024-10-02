@@ -73,11 +73,11 @@ export class BPlus {
         }
     }
 
-    public GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint) : IDataBlock[] | null {
+    public GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint) : IDataBlock[] {
         if (this._root != null) {
             return this._root.GetRange(fromKey, toKey, toEndpoint);
         }
-        return null;
+        return [];
     }
 
     public GetFirstOnOrAfter(key: IKey) : IDataBlock | null {

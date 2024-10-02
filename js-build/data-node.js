@@ -49,8 +49,8 @@ class DataNode extends b_plus_node_1.BPlusNode {
     GetRange(fromKey, toKey, toEndpoint) {
         const index = this.GetChildIndex(fromKey);
         let count = 0;
-        if (index >= 0 && index < this._childrenCount) {
-            let next = this._children[index].Next;
+        if (index < this._childrenCount) {
+            let next = this._children[index];
             while (next != null && this.HasGotLastBlock(toEndpoint, next, toKey) == false) {
                 count++;
                 next = next.Next;
@@ -76,7 +76,7 @@ class DataNode extends b_plus_node_1.BPlusNode {
         else if (endpoint == rangetoendpoint_1.RangeToEndpoint.Excluded && next.Key.CompareTo(toKey) < 0) {
             return false;
         }
-        return false;
+        return true;
     }
     GetWithRapport(key, rapport) {
         rapport.StepCount++;

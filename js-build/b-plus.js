@@ -53,7 +53,7 @@ class BPlus {
         if (this._root != null) {
             return this._root.GetRange(fromKey, toKey, toEndpoint);
         }
-        return null;
+        return [];
     }
     GetFirstOnOrAfter(key) {
         if (this._root != null) {

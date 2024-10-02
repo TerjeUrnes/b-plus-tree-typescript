@@ -1,4 +1,5 @@
 import { BPlus } from "../b-plus-src/b-plus";
+import { RangeToEndpoint } from "../b-plus-src/enums/rangetoendpoint";
 import { DataBlock } from "./datablock";
 import { Key } from "./key";
 
@@ -14,8 +15,22 @@ describe('Empty instance', () => {
         expect(instance).toBeInstanceOf(BPlus);
     });
 
-    test("Finds no block, and get null", () => {
+    test("Count is 0", () => {
+        expect(instance.Count).toBe(0);
+    }) 
+
+    test("Find no block, and get null", () => {
         expect(instance.GetFirstOnOrAfter(new Key(0))).toBeNull();
+    })
+
+    test("Get Range with blocks", () => {
+        expect(instance.GetRange(new Key(-100), new Key(100), RangeToEndpoint.Included)).toStrictEqual([]);
+    })
+
+    test("Try to remove block", () => {
+        expect(instance.Count).toBe(0);
+        instance.Remove(new Key(0));
+        expect(instance.Count).toBe(0);
     })
 
     test("Has no nodes to step through", () => {
@@ -69,6 +84,15 @@ describe("Instance with 1 data block", () => {
         instance.Add(dataBlock);
         expect(instance.GetFirstOnOrAfter(new Key(11))).toBeNull();
     }); 
+
+    test("Get Range with blocks", () => {
+        instance.Add(dataBlock);
+        expect(instance.GetRange(new Key(10), new Key(10), RangeToEndpoint.Included)).toStrictEqual([dataBlock]);
+        expect(instance.GetRange(new Key(10), new Key(11), RangeToEndpoint.Excluded)).toStrictEqual([dataBlock]);
+        expect(instance.GetRange(new Key(0), new Key(100), RangeToEndpoint.Included)).toStrictEqual([dataBlock]);
+        expect(instance.GetRange(new Key(10), new Key(10), RangeToEndpoint.Excluded)).toStrictEqual([]);
+
+    })
 
     test("Removing the block decrease count", () => {
         instance.Add(dataBlock);
