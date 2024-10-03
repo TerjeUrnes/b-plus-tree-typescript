@@ -20,7 +20,7 @@ class DataNode extends b_plus_node_1.BPlusNode {
         this._children[this._childrenCount++] = firstBlock;
     }
     Add(dataBlock) {
-        const index = this.GetChildIndex(dataBlock.Key);
+        const index = this.GetChildInsertIndex(dataBlock.Key);
         this.InsertChildAtIndex(index, dataBlock);
         this.UpdateLinkingAfterInsert(index);
         if (this._childrenCount > this._treeOrder) {
@@ -29,7 +29,7 @@ class DataNode extends b_plus_node_1.BPlusNode {
         return null;
     }
     Remove(key) {
-        const index = this.GetChildIndex(key);
+        const index = this.GetChildInsertIndex(key);
         if (index < this._childrenCount && this._children[index].Key.CompareTo(key) == 0) {
             this.RemoveChildAtIndex(index);
             if (this._childrenCount < this._minBeforeUnderflow) {
@@ -44,14 +44,14 @@ class DataNode extends b_plus_node_1.BPlusNode {
         }
     }
     Get(key) {
-        const index = this.GetChildIndex(key);
+        const index = this.GetChildInsertIndex(key);
         if (index >= this._childrenCount) {
             return null;
         }
         return this._children[index];
     }
     GetRange(fromKey, toKey, toEndpoint) {
-        const index = this.GetChildIndex(fromKey);
+        const index = this.GetChildInsertIndex(fromKey);
         let count = 0;
         if (index < this._childrenCount) {
             let next = this._children[index];

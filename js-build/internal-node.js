@@ -23,7 +23,7 @@ class InternalNode extends b_plus_node_1.BPlusNode {
         this._key = this.SmallestKey;
     }
     Add(dataBlock) {
-        const index = this.GetChildIndex(dataBlock.Key);
+        const index = this.GetChildInsertIndex(dataBlock.Key);
         const result = this._children[index].Add(dataBlock);
         if (result != null) {
             this.InsertChildAtIndex(index + 1, result);
@@ -34,7 +34,7 @@ class InternalNode extends b_plus_node_1.BPlusNode {
         return null;
     }
     AddNode(node) {
-        const index = this.GetChildIndex(node.SmallestKey);
+        const index = this.GetChildInsertIndex(node.SmallestKey);
         this.InsertChildAtIndex(index, node);
     }
     Remove(key) {
@@ -44,7 +44,7 @@ class InternalNode extends b_plus_node_1.BPlusNode {
         throw new Error("Method not implemented.");
     }
     GetRange(fromKey, toKey, toEndpoint) {
-        const index = this.GetChildIndex(fromKey);
+        const index = this.GetChildInsertIndex(fromKey);
         return this._children[index].GetRange(fromKey, toKey, toEndpoint);
     }
     GetWithRapport(key, rapport) {
@@ -54,7 +54,7 @@ class InternalNode extends b_plus_node_1.BPlusNode {
             path.push(this._children[i].Key.ToString());
         }
         rapport.path.push(path);
-        const index = this.GetChildIndex(key);
+        const index = this.GetChildFindIndex(key);
         this._children[index].GetWithRapport(key, rapport);
     }
     SplitInternalNode() {

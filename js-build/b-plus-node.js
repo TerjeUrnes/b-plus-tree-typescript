@@ -42,7 +42,15 @@ class BPlusNode {
         }
         this._childrenCount--;
     }
-    GetChildIndex(key) {
+    GetChildFindIndex(key) {
+        for (let i = this._childrenCount - 1; i >= 0; i--) {
+            if (key.CompareTo(this._children[i].Key) >= 0) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    GetChildInsertIndex(key) {
         for (let i = this._childrenCount - 1; i >= 0; i--) {
             if (key.CompareTo(this._children[i].Key) > 0) {
                 return i + 1;
