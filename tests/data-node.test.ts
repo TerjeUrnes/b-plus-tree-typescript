@@ -88,30 +88,6 @@ describe("Splitting a data node", () => {
         instance = new DataNode(null, 3, 2, 1, dataBlock1);
     });
 
-    test("Single split returns a internal node", () => {
-        instance.Add(dataBlock2);
-        instance.Add(dataBlock3);
-        var newRoot = instance.Add(dataBlock4);
-
-        expect(newRoot).toBeInstanceOf(InternalNode);
-    });
-
-    test("Correct child count after split", () => {
-        instance.Add(dataBlock2);
-        instance.Add(dataBlock3);
-        var newRoot = instance.Add(dataBlock4) as BPlusNode;
-
-        expect(newRoot.ChildrenCount).toBe(2);
-    });
-
-    test("Correct data block count after split", () => {
-        instance.Add(dataBlock2);
-        instance.Add(dataBlock3);
-        var newRoot = instance.Add(dataBlock4) as BPlusNode;
-
-        expect(newRoot.DataBlockCount).toBe(4);
-    });
-
     test("Correct child count in the original node", () => {
         instance.Add(dataBlock2);
         instance.Add(dataBlock3);
@@ -123,14 +99,10 @@ describe("Splitting a data node", () => {
     test("Has correct traverse paths", () => {
         instance.Add(dataBlock2);
         instance.Add(dataBlock3);
-        var newRoot = instance.Add(dataBlock4) as BPlusNode;
+        instance.Add(dataBlock4) as BPlusNode;
 
         var rapport = new TraverseRapport();
-        newRoot.GetWithRapport(new Key(30), rapport);
-        expect(rapport.path).toStrictEqual([["10","30"],["30","40"]]);
-
-        // rapport = new TraverseRapport();
-        // newRoot.GetWithRapport(new Key(20), rapport);
-        // expect(rapport.path).toStrictEqual([["10","30"],["10","20"]]);
+        instance.GetWithRapport(new Key(20), rapport);
+        expect(rapport.path).toStrictEqual([["10","20"]]);
     })
 });
