@@ -2,6 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BPlusNode = void 0;
 class BPlusNode {
+    /**
+     * Contains the children.
+     * Size n + 1, last position is for the child that forces a split.
+     */
+    _children;
+    _childrenCount = 0;
+    _parentNode = null;
+    _treeOrder;
+    _afterAtSplit;
+    _minBeforeUnderflow;
     get ChildrenCount() {
         return this._childrenCount;
     }
@@ -19,8 +29,6 @@ class BPlusNode {
         this._parentNode = new WeakRef(parent);
     }
     constructor(parent, order, afterAtSplit, minBeforeUnderflow) {
-        this._childrenCount = 0;
-        this._parentNode = null;
         if (parent != null) {
             this._parentNode = new WeakRef(parent);
         }

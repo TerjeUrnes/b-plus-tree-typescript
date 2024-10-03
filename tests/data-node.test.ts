@@ -1,9 +1,11 @@
 import { BPlusNode } from "../b-plus-src/b-plus-node";
 import { DataNode } from "../b-plus-src/data-node";
-import { TraverseRapport } from "../b-plus-src/dataclasses/traverserapport";
-import { InternalNode } from "../b-plus-src/internal-node";
+import { TraverseRapport } from "./classes/traverserapport";
 import { DataBlock } from "./datablock";
+import { DataNodeEx } from "./extensions/data-node-ex.ts";
 import { Key } from "./key";
+//jest.disableAutomock();
+jest.setMock("../b-plus-src/data-node", import("./extensions/data-node-ex.ts"))
 
 describe("Testing new instance", () => {
 
@@ -102,7 +104,7 @@ describe("Splitting a data node", () => {
         instance.Add(dataBlock4) as BPlusNode;
 
         var rapport = new TraverseRapport();
-        instance.GetWithRapport(new Key(20), rapport);
+        DataNodeEx.GetWithRapport(instance, new Key(20), rapport);
         expect(rapport.path).toStrictEqual([["10","20"]]);
     })
 });

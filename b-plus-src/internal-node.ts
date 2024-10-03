@@ -1,5 +1,4 @@
 import { BPlusNode } from "./b-plus-node";
-import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RangeToEndpoint } from "./enums/rangetoendpoint";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
@@ -65,19 +64,9 @@ export class InternalNode extends BPlusNode {
         return (this._children[index] as BPlusNode).GetRange(fromKey, toKey, toEndpoint);
     }
 
-    public GetWithRapport(key: IKey, rapport: TraverseRapport): void {
-        rapport.StepCount++;
-        var path = new Array<string>(); 
-        for (var i = 0; i < this._childrenCount; i++) {
-            path.push(this._children[i].Key.ToString());
-        }
-        rapport.path.push(path);
-        const index = this.GetChildFindIndex(key);
-        (this._children[index] as BPlusNode).GetWithRapport(key, rapport);
-    }
-
     private SplitInternalNode() : BPlusNode {
         return this;
     }
     
 }
+

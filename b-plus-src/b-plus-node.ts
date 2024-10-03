@@ -1,4 +1,3 @@
-import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RangeToEndpoint } from "./enums/rangetoendpoint";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
@@ -17,6 +16,10 @@ export abstract class BPlusNode {
     protected readonly _treeOrder: number;
     protected readonly _afterAtSplit: number;
     protected readonly _minBeforeUnderflow: number;
+
+    public get Children(): Array<BPlusNode | IDataBlock> {
+        return this._children;
+    }   
 
     public get ChildrenCount(): number {
         return this._childrenCount;
@@ -43,7 +46,6 @@ export abstract class BPlusNode {
     public abstract GetRange(fromKey: IKey, toKey: IKey, toEndpoint: RangeToEndpoint) : IDataBlock[];
     public abstract Add(dataBlock: IDataBlock) : BPlusNode | null;
     public abstract Remove(key: IKey) : RemoveStatus;
-    public abstract GetWithRapport(key: IKey, rapport: TraverseRapport) : void;
 
     constructor(parent: BPlusNode | null, order: number, afterAtSplit: number, minBeforeUnderflow: number,) {
         if (parent != null) {
@@ -70,7 +72,7 @@ export abstract class BPlusNode {
         this._childrenCount--;
     }
 
-    protected GetChildFindIndex(key: IKey) : number {
+    public GetChildFindIndex(key: IKey) : number {
         for (let i = this._childrenCount - 1; i >= 0; i--) {
             if (key.CompareTo(this._children[i].Key) >= 0) {
                 return i;
@@ -79,7 +81,7 @@ export abstract class BPlusNode {
         return 0;
     }
 
-    protected GetChildInsertIndex(key: IKey) : number {
+    public GetChildInsertIndex(key: IKey) : number {
         for (let i = this._childrenCount - 1; i >= 0; i--) {
             if (key.CompareTo(this._children[i].Key) > 0) {
                 return i + 1;

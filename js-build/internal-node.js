@@ -4,6 +4,7 @@ exports.InternalNode = void 0;
 const b_plus_node_1 = require("./b-plus-node");
 const removestatus_1 = require("./enums/removestatus");
 class InternalNode extends b_plus_node_1.BPlusNode {
+    _key;
     get Key() {
         return this._key;
     }
@@ -46,16 +47,6 @@ class InternalNode extends b_plus_node_1.BPlusNode {
     GetRange(fromKey, toKey, toEndpoint) {
         const index = this.GetChildInsertIndex(fromKey);
         return this._children[index].GetRange(fromKey, toKey, toEndpoint);
-    }
-    GetWithRapport(key, rapport) {
-        rapport.StepCount++;
-        var path = new Array();
-        for (var i = 0; i < this._childrenCount; i++) {
-            path.push(this._children[i].Key.ToString());
-        }
-        rapport.path.push(path);
-        const index = this.GetChildFindIndex(key);
-        this._children[index].GetWithRapport(key, rapport);
     }
     SplitInternalNode() {
         return this;

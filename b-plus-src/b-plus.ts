@@ -2,7 +2,6 @@ import { BPlusNode } from "./b-plus-node";
 import { DataNode } from "./data-node";
 import { IDataBlock } from "./idatablock";
 import { IKey } from "./ikey";
-import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RemoveStatus } from "./enums/removestatus";
 import { RangeToEndpoint } from "./enums/rangetoendpoint";
 
@@ -20,6 +19,10 @@ export class BPlus {
     private _root: BPlusNode | null = null;
 
     private _dataBlockCount: number = 0;
+
+    public get RootNode(): BPlusNode | null {
+        return this._root;
+    }
 
     public get Count(): number {
         return this._dataBlockCount;
@@ -87,13 +90,5 @@ export class BPlus {
         else {
             return null;
         }
-    }
-
-    public GetWithRapport(key: IKey) : TraverseRapport {
-        var rapport = new TraverseRapport();
-        if (this._root != null) {
-            this._root.GetWithRapport(key, rapport);
-        }
-        return rapport;
     }
 }

@@ -4,8 +4,8 @@ import {IKey} from "../b-plus-src/ikey";
 export class DataBlock implements IDataBlock {
     
     private _key: IKey;
-    private _previous: IDataBlock | null;
-    private _next: IDataBlock | null;
+    private _previous: IDataBlock | null = null;
+    private _next: IDataBlock | null = null;
 
     public get Key(): IKey {
         return this._key;

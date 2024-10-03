@@ -1,7 +1,11 @@
 import { BPlus } from "../b-plus-src/b-plus";
+import { } from "../b-plus-src/b-plus";
 import { RangeToEndpoint } from "../b-plus-src/enums/rangetoendpoint";
 import { DataBlock } from "./datablock";
+import { BPlusEx } from "./extensions/b-plus-ex.ts";
 import { Key } from "./key";
+//jest.disableAutomock();
+jest.setMock("../b-plus-src/b-plus", import("./extensions/b-plus-ex.ts"));
 
 describe('Empty instance', () => {
 
@@ -34,12 +38,12 @@ describe('Empty instance', () => {
     })
 
     test("Has no nodes to step through", () => {
-        var rapport = instance.GetWithRapport(new Key(0));
+        var rapport = BPlusEx.GetWithRapport(instance, new Key(0));
         expect(rapport.StepCount).toBe(0);
     });
 
     test("Has empty traverse path", () => {
-        var rapport = instance.GetWithRapport(new Key(0));
+        var rapport = BPlusEx.GetWithRapport(instance, new Key(0));
         expect(rapport.path).toStrictEqual([]);
     });
 });
@@ -139,13 +143,13 @@ describe("Instance with 1 data block", () => {
 
     test("Has step through 1 node", () => {
         instance.Add(dataBlock);
-        var rapport = instance.GetWithRapport(key);
+        var rapport = BPlusEx.GetWithRapport(instance, key);
         expect(rapport.StepCount).toBe(1);
     })
 
     test("Has correct traverse path", () => {
         instance.Add(dataBlock);
-        var rapport = instance.GetWithRapport(key);
+        var rapport = BPlusEx.GetWithRapport(instance, key);
         expect(rapport.path).toStrictEqual([["10"]]);
     });
 }) 
@@ -222,14 +226,14 @@ describe("Instance with 2 data block", () => {
     test("Has correct traverse path. Added sequential", () => {
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
-        var rapport = instance.GetWithRapport(key1);
+        var rapport = BPlusEx.GetWithRapport(instance, key1);
         expect(rapport.path).toStrictEqual([["10","20"]]);
     });
 
     test("Has correct traverse path. Added non-sequential", () => {
         instance.Add(dataBlock2);
         instance.Add(dataBlock1);
-        var rapport = instance.GetWithRapport(key1);
+        var rapport = BPlusEx.GetWithRapport(instance, key1);
         expect(rapport.path).toStrictEqual([["10","20"]]);
     });
 
@@ -237,10 +241,10 @@ describe("Instance with 2 data block", () => {
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
         instance.Remove(key1);
-        var rapport = instance.GetWithRapport(key2);
+        var rapport = BPlusEx.GetWithRapport(instance, key2);
         expect(rapport.path).toStrictEqual([["20"]]);
         instance.Remove(key2);
-        var rapport = instance.GetWithRapport(key1);
+        var rapport = BPlusEx.GetWithRapport(instance, key1);
         expect(rapport.path).toStrictEqual([]);
     });
 
@@ -248,10 +252,10 @@ describe("Instance with 2 data block", () => {
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
         instance.Remove(key2);
-        var rapport = instance.GetWithRapport(key1);
+        var rapport = BPlusEx.GetWithRapport(instance, key1);
         expect(rapport.path).toStrictEqual([["10"]]);
         instance.Remove(key1);
-        var rapport = instance.GetWithRapport(key2);
+        var rapport = BPlusEx.GetWithRapport(instance, key2);
         expect(rapport.path).toStrictEqual([]);
     });
 });
@@ -279,7 +283,7 @@ describe("Instance with 10 data blocks in order 10 tree", () => {
         for (let i = 0; i < 10; i++) {
             instance.Add(dataBlocks[i]);
         }
-        var rapport = instance.GetWithRapport(new Key(5));
+        var rapport = BPlusEx.GetWithRapport(instance, new Key(5));
         expect(rapport.path).toStrictEqual([["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]]);
     })
 
@@ -287,7 +291,7 @@ describe("Instance with 10 data blocks in order 10 tree", () => {
         for (let i = 9; i >= 0; i--) {
             instance.Add(dataBlocks[i]);
         }
-        var rapport = instance.GetWithRapport(new Key(5));
+        var rapport = BPlusEx.GetWithRapport(instance, new Key(5));
         expect(rapport.path).toStrictEqual([["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]]);
     })
 })

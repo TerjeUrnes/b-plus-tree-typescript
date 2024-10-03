@@ -1,5 +1,4 @@
 import { BPlusNode } from "./b-plus-node"
-import { TraverseRapport } from "./dataclasses/traverserapport";
 import { RangeToEndpoint } from "./enums/rangetoendpoint";
 import { RemoveStatus } from "./enums/removestatus";
 import { IDataBlock } from "./idatablock";
@@ -97,14 +96,8 @@ export class DataNode extends BPlusNode {
         return true;
     }
 
-    public GetWithRapport(key: IKey, rapport: TraverseRapport): void {
-        rapport.StepCount++;
-        var path = new Array<string>(); 
-        for (var i = 0; i < this._childrenCount; i++) {
-            path.push(this._children[i].Key.ToString());
-        }
-        rapport.path.push(path);
-    }
+
+
 
     private UpdateLinkingAfterInsert(index: number) : void {
         if (index > 0) {

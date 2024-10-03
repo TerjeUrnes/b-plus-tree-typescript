@@ -2,19 +2,21 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BPlus = void 0;
 const data_node_1 = require("./data-node");
-const traverserapport_1 = require("./dataclasses/traverserapport");
 const removestatus_1 = require("./enums/removestatus");
 /**
  * A B++ Tree implementation in TypeScript.
  */
 class BPlus {
+    ORDER_OF_THE_TREE = 5;
+    _orderOfTheTree;
+    _numChildAfterSplit;
+    _minNumChildBeforeUnderflow;
+    _root = null;
+    _dataBlockCount = 0;
     get Count() {
         return this._dataBlockCount;
     }
     constructor(orderOfTheTree = this.ORDER_OF_THE_TREE, numChildAfterSplit = orderOfTheTree / 2, minNumChildBeforeUnderflow = orderOfTheTree / 2) {
-        this.ORDER_OF_THE_TREE = 5;
-        this._root = null;
-        this._dataBlockCount = 0;
         this._orderOfTheTree = orderOfTheTree > 2 ? orderOfTheTree : 2;
         this._numChildAfterSplit = numChildAfterSplit > 1 ? numChildAfterSplit : 1;
         this._minNumChildBeforeUnderflow = minNumChildBeforeUnderflow > 1 ? minNumChildBeforeUnderflow : 1;
@@ -41,7 +43,7 @@ class BPlus {
         }
     }
     Get(key) {
-        const result = this.GetFirstOnOrAfter(key);
+        const result = this.GetFirst(key);
         if (result != null && key.CompareTo(result.Key) == 0) {
             return result;
         }
@@ -55,20 +57,13 @@ class BPlus {
         }
         return [];
     }
-    GetFirstOnOrAfter(key) {
+    GetFirst(key) {
         if (this._root != null) {
             return this._root.Get(key);
         }
         else {
             return null;
         }
-    }
-    GetWithRapport(key) {
-        var rapport = new traverserapport_1.TraverseRapport();
-        if (this._root != null) {
-            this._root.GetWithRapport(key, rapport);
-        }
-        return rapport;
     }
 }
 exports.BPlus = BPlus;

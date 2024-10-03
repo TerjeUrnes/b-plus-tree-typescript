@@ -1,9 +1,12 @@
 import { BPlusNode } from "../b-plus-src/b-plus-node";
 import { DataNode } from "../b-plus-src/data-node";
-import { TraverseRapport } from "../b-plus-src/dataclasses/traverserapport";
+import { TraverseRapport } from "./classes/traverserapport";
 import { InternalNode } from "../b-plus-src/internal-node";
 import { DataBlock } from "./datablock";
 import { Key } from "./key";
+import { InternalNodeEx } from "./extensions/internal-node-ex.ts";
+//jest.disableAutomock();
+jest.setMock("../b-plus-src/internal-node", import("./extensions/internal-node-ex.ts"));
 
 
 describe("Splitting one data node", () => {
@@ -49,14 +52,14 @@ describe("Splitting one data node", () => {
     test("Has correct traverse paths", () => {
         instance.Add(dataBlock2);
         instance.Add(dataBlock3);
-        var newRoot = instance.Add(dataBlock4) as BPlusNode;
+        var newRoot = instance.Add(dataBlock4) as InternalNode;
 
         var rapport = new TraverseRapport();
-        newRoot.GetWithRapport(new Key(30), rapport);
+        InternalNodeEx.GetWithRapport(newRoot, new Key(30), rapport);
         expect(rapport.path).toStrictEqual([["10","30"],["30","40"]]);
 
         rapport = new TraverseRapport();
-        newRoot.GetWithRapport(new Key(20), rapport);
+        InternalNodeEx.GetWithRapport(newRoot, new Key(20), rapport);
         expect(rapport.path).toStrictEqual([["10","30"],["10","20"]]);
     })
 });
