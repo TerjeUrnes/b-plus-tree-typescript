@@ -64,7 +64,7 @@ export class BPlus {
     }
 
     public Get(key: IKey) : IDataBlock | null {
-        const result = this.GetFirstOnOrAfter(key);
+        const result = this.GetFirst(key);
         if(result != null && key.CompareTo(result.Key) == 0) {
             return result;
         }
@@ -80,7 +80,7 @@ export class BPlus {
         return [];
     }
 
-    public GetFirstOnOrAfter(key: IKey) : IDataBlock | null {
+    public GetFirst(key: IKey) : IDataBlock | null {
         if (this._root != null) {
             return this._root.Get(key);
         }

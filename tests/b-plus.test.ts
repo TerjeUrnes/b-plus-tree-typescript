@@ -20,7 +20,7 @@ describe('Empty instance', () => {
     }) 
 
     test("Find no block, and get null", () => {
-        expect(instance.GetFirstOnOrAfter(new Key(0))).toBeNull();
+        expect(instance.GetFirst(new Key(0))).toBeNull();
     })
 
     test("Get Range with blocks", () => {
@@ -64,7 +64,7 @@ describe("Instance with 1 data block", () => {
     test("Get the block back with same key", () => {
         instance.Add(dataBlock);
         expect(instance.Get(key)).toBe(dataBlock);
-        expect(instance.GetFirstOnOrAfter(key)).toBe(dataBlock);
+        expect(instance.GetFirst(key)).toBe(dataBlock);
     });
 
     test("Get null for other keys", () => {
@@ -76,13 +76,13 @@ describe("Instance with 1 data block", () => {
 
     test("Get the first block with a smaller keys", () => {
         instance.Add(dataBlock);
-        expect(instance.GetFirstOnOrAfter(new Key(3))).toBe(dataBlock);
-        expect(instance.GetFirstOnOrAfter(new Key(9))).toBe(dataBlock);
+        expect(instance.GetFirst(new Key(3))).toBe(dataBlock);
+        expect(instance.GetFirst(new Key(9))).toBe(dataBlock);
     });
 
     test("Get null for a larger key", () => {
         instance.Add(dataBlock);
-        expect(instance.GetFirstOnOrAfter(new Key(11))).toBeNull();
+        expect(instance.GetFirst(new Key(11))).toBeNull();
     }); 
 
     test("Get Range with blocks", () => {
@@ -121,7 +121,7 @@ describe("Instance with 1 data block", () => {
     test("Get block after removing with smaller key", () => {
         instance.Add(dataBlock);
         instance.Remove(new Key(3));
-        expect(instance.GetFirstOnOrAfter(new Key(3))).toBe(dataBlock);
+        expect(instance.GetFirst(new Key(3))).toBe(dataBlock);
         expect(instance.Get(key)).toBe(dataBlock);
     });
 
@@ -194,19 +194,19 @@ describe("Instance with 2 data block", () => {
     test("Get first gives back second block when using a bigger key", () => {
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
-        expect(instance.GetFirstOnOrAfter(new Key(25))).toBeNull();
+        expect(instance.GetFirst(new Key(25))).toBeNull();
     });
 
     test("Get first gives back second block when using a key in between", () => {
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
-        expect(instance.GetFirstOnOrAfter(new Key(15))).toBe(dataBlock2);
+        expect(instance.GetFirst(new Key(15))).toBe(dataBlock2);
     }); 
 
     test("Get first gives back first block when using a smaller key", () => {
         instance.Add(dataBlock1);
         instance.Add(dataBlock2);
-        expect(instance.GetFirstOnOrAfter(new Key(5))).toBe(dataBlock1);
+        expect(instance.GetFirst(new Key(5))).toBe(dataBlock1);
     }); 
 
     test("Removing the block gives correct count. Removed sequential", () => {
