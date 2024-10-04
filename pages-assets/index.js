@@ -12,12 +12,11 @@ function initDemo() {
     var canvas = document.getElementById("tree-canvas");
     var ctx = canvas.getContext("2d");
 
-    var width = canvas.clientWidth;
+    canvas.width = canvas.clientWidth;
 
+    ctx.fillStyle = "#ffffff";
     ctx.font = "10px Arial";
     var textWidth = ctx.measureText("Bare en test").width;
-
-    console.log(canvas.width + " " + width + " " + textWidth);
 
     var x = Math.floor((canvas.width - textWidth) / 2);
     ctx.fillText("Bare en test", x, 50);
