@@ -19,8 +19,10 @@ function initDemo() {
     ctx.font = "14px Arial";
     var textWidth = ctx.measureText("210").width;
 
-    var x = Math.floor((canvas.width - textWidth) / 2);
+    var x = Math.floor((canvas.width - textWidth - (4 * 20)) / 2);
     ctx.fillText("210", x, 50);
+
+    ctx.fillRect(x + textWidth + 6, 50, 14, 14);
 
 }
 
