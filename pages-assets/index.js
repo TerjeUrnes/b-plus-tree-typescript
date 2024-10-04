@@ -17,9 +17,9 @@ function initDemo() {
     ctx.font = "10px Arial";
     var textWidth = ctx.measureText("Bare en test").width;
 
-    console.log(width + " " + textWidth);
+    console.log(canvas.width + " " + width + " " + textWidth);
 
-    var x = Math.floor((width - textWidth) / 2);
+    var x = Math.floor((canvas.width - textWidth) / 2);
     ctx.fillText("Bare en test", x, 50);
 
 }
