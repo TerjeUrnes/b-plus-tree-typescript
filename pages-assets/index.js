@@ -22,7 +22,7 @@ function initDemo() {
     var x = Math.floor((canvas.width - textWidth - (4 * 20)) / 2);
     ctx.fillText("210", x, 50);
 
-    ctx.fillRect(x + textWidth + 6, 50, 14, 14);
+    ctx.fillRect(x + textWidth + 10, 36, 12, 12);
 
 }
 
