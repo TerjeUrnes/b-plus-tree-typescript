@@ -17,6 +17,8 @@ function initDemo() {
     ctx.font = "30px Arial";
     var textWidth = ctx.measureText("Bare en test").width;
 
+    console.log(width + " " + textWidth);
+
     var x = (width - textWidth) / 2;
     ctx.fillText("Bare en test", 10, 50);
 
