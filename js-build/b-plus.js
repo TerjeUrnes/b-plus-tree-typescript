@@ -1,18 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BPlus = void 0;
-const data_node_1 = require("./data-node");
-const removestatus_1 = require("./enums/removestatus");
+import { DataNode } from "./data-node";
+import { RemoveStatus } from "./enums/removestatus";
 /**
  * A B++ Tree implementation in TypeScript.
  */
-class BPlus {
+export class BPlus {
     ORDER_OF_THE_TREE = 5;
     _orderOfTheTree;
     _numChildAfterSplit;
     _minNumChildBeforeUnderflow;
     _root = null;
     _dataBlockCount = 0;
+    get RootNode() {
+        return this._root;
+    }
     get Count() {
         return this._dataBlockCount;
     }
@@ -26,16 +26,16 @@ class BPlus {
             this._root.Add(dataBlock);
         }
         else {
-            this._root = new data_node_1.DataNode(null, this._orderOfTheTree, this._numChildAfterSplit, this._minNumChildBeforeUnderflow, dataBlock);
+            this._root = new DataNode(null, this._orderOfTheTree, this._numChildAfterSplit, this._minNumChildBeforeUnderflow, dataBlock);
         }
         this._dataBlockCount++;
     }
     Remove(key) {
-        var removeStatus = removestatus_1.RemoveStatus.Unknown;
+        var removeStatus = RemoveStatus.Unknown;
         if (this._root != null) {
             removeStatus = this._root.Remove(key);
         }
-        if (removeStatus != removestatus_1.RemoveStatus.NotFound && removeStatus != removestatus_1.RemoveStatus.Unknown) {
+        if (removeStatus != RemoveStatus.NotFound && removeStatus != RemoveStatus.Unknown) {
             this._dataBlockCount--;
             if (this._dataBlockCount == 0) {
                 this._root = null;
@@ -66,4 +66,3 @@ class BPlus {
         }
     }
 }
-exports.BPlus = BPlus;

@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BPlusNode = void 0;
-class BPlusNode {
+export class BPlusNode {
     /**
      * Contains the children.
      * Size n + 1, last position is for the child that forces a split.
@@ -12,6 +9,9 @@ class BPlusNode {
     _treeOrder;
     _afterAtSplit;
     _minBeforeUnderflow;
+    get Children() {
+        return this._children;
+    }
     get ChildrenCount() {
         return this._childrenCount;
     }
@@ -75,4 +75,3 @@ class BPlusNode {
         }
     }
 }
-exports.BPlusNode = BPlusNode;

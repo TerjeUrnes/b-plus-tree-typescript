@@ -1,9 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.InternalNode = void 0;
-const b_plus_node_1 = require("./b-plus-node");
-const removestatus_1 = require("./enums/removestatus");
-class InternalNode extends b_plus_node_1.BPlusNode {
+import { BPlusNode } from "./b-plus-node";
+import { RemoveStatus } from "./enums/removestatus";
+export class InternalNode extends BPlusNode {
     _key;
     get Key() {
         return this._key;
@@ -39,7 +36,7 @@ class InternalNode extends b_plus_node_1.BPlusNode {
         this.InsertChildAtIndex(index, node);
     }
     Remove(key) {
-        return removestatus_1.RemoveStatus.Unknown;
+        return RemoveStatus.Unknown;
     }
     Get(key) {
         throw new Error("Method not implemented.");
@@ -52,4 +49,3 @@ class InternalNode extends b_plus_node_1.BPlusNode {
         return this;
     }
 }
-exports.InternalNode = InternalNode;

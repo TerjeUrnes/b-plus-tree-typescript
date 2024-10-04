@@ -1,11 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DataNode = void 0;
-const b_plus_node_1 = require("./b-plus-node");
-const rangetoendpoint_1 = require("./enums/rangetoendpoint");
-const removestatus_1 = require("./enums/removestatus");
-const internal_node_1 = require("./internal-node");
-class DataNode extends b_plus_node_1.BPlusNode {
+import { BPlusNode } from "./b-plus-node";
+import { RangeToEndpoint } from "./enums/rangetoendpoint";
+import { RemoveStatus } from "./enums/removestatus";
+import { InternalNode } from "./internal-node";
+export class DataNode extends BPlusNode {
     get Key() {
         return this.SmallestKey;
     }
@@ -33,14 +30,14 @@ class DataNode extends b_plus_node_1.BPlusNode {
         if (index < this._childrenCount && this._children[index].Key.CompareTo(key) == 0) {
             this.RemoveChildAtIndex(index);
             if (this._childrenCount < this._minBeforeUnderflow) {
-                return removestatus_1.RemoveStatus.UnderflowAfterRemove;
+                return RemoveStatus.UnderflowAfterRemove;
             }
             else {
-                return removestatus_1.RemoveStatus.RemovedComplete;
+                return RemoveStatus.RemovedComplete;
             }
         }
         else {
-            return removestatus_1.RemoveStatus.NotFound;
+            return RemoveStatus.NotFound;
         }
     }
     Get(key) {
@@ -74,10 +71,10 @@ class DataNode extends b_plus_node_1.BPlusNode {
         return range;
     }
     HasGotLastBlock(endpoint, next, toKey) {
-        if (endpoint == rangetoendpoint_1.RangeToEndpoint.Included && next.Key.CompareTo(toKey) <= 0) {
+        if (endpoint == RangeToEndpoint.Included && next.Key.CompareTo(toKey) <= 0) {
             return false;
         }
-        else if (endpoint == rangetoendpoint_1.RangeToEndpoint.Excluded && next.Key.CompareTo(toKey) < 0) {
+        else if (endpoint == RangeToEndpoint.Excluded && next.Key.CompareTo(toKey) < 0) {
             return false;
         }
         return true;
@@ -102,11 +99,10 @@ class DataNode extends b_plus_node_1.BPlusNode {
         this.RemoveChildAtIndex(this._afterAtSplit);
         this.SplitNode(newRightNode);
         if (parent == null) {
-            const newParent = new internal_node_1.InternalNode(parent, this._treeOrder, this._afterAtSplit, this._minBeforeUnderflow, this);
+            const newParent = new InternalNode(parent, this._treeOrder, this._afterAtSplit, this._minBeforeUnderflow, this);
             newParent.AddNode(newRightNode);
             return newParent;
         }
         return newRightNode;
     }
 }
-exports.DataNode = DataNode;
