@@ -14,13 +14,13 @@ function initDemo() {
 
     var width = canvas.clientWidth;
 
-    ctx.font = "30px Arial";
+    ctx.font = "10px Arial";
     var textWidth = ctx.measureText("Bare en test").width;
 
     console.log(width + " " + textWidth);
 
-    var x = (width - textWidth) / 2;
-    ctx.fillText("Bare en test", 10, 50);
+    var x = Math.floor((width - textWidth) / 2);
+    ctx.fillText("Bare en test", x, 50);
 
 }
 
