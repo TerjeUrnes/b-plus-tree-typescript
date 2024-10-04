@@ -1,5 +1,5 @@
-import { BPlusNode } from "./b-plus-node";
-import { RemoveStatus } from "./enums/removestatus";
+import { BPlusNode } from "./b-plus-node.js";
+import { RemoveStatus } from "./enums/removestatus.js";
 export class InternalNode extends BPlusNode {
     _key;
     get Key() {

@@ -1,7 +1,7 @@
-import { BPlusNode } from "./b-plus-node";
-import { RangeToEndpoint } from "./enums/rangetoendpoint";
-import { RemoveStatus } from "./enums/removestatus";
-import { InternalNode } from "./internal-node";
+import { BPlusNode } from "./b-plus-node.js";
+import { RangeToEndpoint } from "./enums/rangetoendpoint.js";
+import { RemoveStatus } from "./enums/removestatus.js";
+import { InternalNode } from "./internal-node.js";
 export class DataNode extends BPlusNode {
     get Key() {
         return this.SmallestKey;

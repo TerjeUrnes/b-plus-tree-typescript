@@ -1,5 +1,5 @@
-import { DataNode } from "./data-node";
-import { RemoveStatus } from "./enums/removestatus";
+import { DataNode } from "./data-node.js";
+import { RemoveStatus } from "./enums/removestatus.js";
 /**
  * A B++ Tree implementation in TypeScript.
  */
