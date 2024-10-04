@@ -18,7 +18,7 @@ function initDemo() {
     var textWidth = ctx.measureText("Bare en test").width;
 
     var x = (width - textWidth) / 2;
-    ctx.fillText("Bare en test", x, 50);
+    ctx.fillText("Bare en test", 10, 50);
 
 }
 
