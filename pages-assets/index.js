@@ -13,6 +13,7 @@ function initDemo() {
     var ctx = canvas.getContext("2d");
 
     canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
 
     ctx.fillStyle = "#ffffff";
     ctx.font = "10px Arial";
