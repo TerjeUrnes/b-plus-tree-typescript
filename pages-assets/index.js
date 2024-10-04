@@ -7,6 +7,6 @@ document.addEventListener("readystatechange", (e) => {
 });
 
 function initDemo() {
-    var tree = new BPlus(3);
+    var tree = new BPlus(3, 1, 1);
 }
 
