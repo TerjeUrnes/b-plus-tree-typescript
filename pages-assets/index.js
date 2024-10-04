@@ -23,6 +23,8 @@ function initDemo() {
     ctx.fillText("210", x, 50);
 
     ctx.fillRect(x + textWidth + 10, 40, 10, 10);
-
+    ctx.fillRect(x + textWidth + 30, 40, 10, 10);
+    ctx.fillRect(x + textWidth + 50, 40, 10, 10);
+    ctx.fillRect(x + textWidth + 70, 40, 10, 10);
 }
 
