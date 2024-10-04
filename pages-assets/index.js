@@ -26,5 +26,6 @@ function initDemo() {
     ctx.fillRect(x + textWidth + 30, 40, 10, 10);
     ctx.fillRect(x + textWidth + 50, 40, 10, 10);
     ctx.fillRect(x + textWidth + 70, 40, 10, 10);
+    ctx.strokeRect(x - 10, 35, textWidth + (4 * 20) + 20, 20);
 }
 
