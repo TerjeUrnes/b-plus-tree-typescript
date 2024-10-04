@@ -1,4 +1,4 @@
-import { BPlus } from "../js-build/b-plus";
+import { BPlus } from "../js-build/b-plus.js";
 
 document.addEventListener("readystatechange", (e) => {
     if (document.readyState === "complete") {
