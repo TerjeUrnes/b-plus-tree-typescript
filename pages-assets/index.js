@@ -8,5 +8,15 @@ document.addEventListener("readystatechange", (e) => {
 
 function initDemo() {
     var tree = new BPlus(3, 1, 1);
+
+    var canvas = document.getElementById("tree-canvas");
+    var ctx = canvas.getContext("2d");
+
+    var width = canvas.clientWidth;
+    var textWidth = ctx.measureText("Bare en test").width;
+    var x = (width - textWidth) / 2;
+
+    ctx.fillText("Bare en test", x, 50);
+
 }
 

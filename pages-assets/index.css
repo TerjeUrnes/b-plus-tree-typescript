@@ -8,3 +8,9 @@ body {
     height: 100vh;
     color: #b3b9ff;
 }
+
+#tree-canvas {
+    width: 95%;
+    height: 500px;
+    border: 1px solid black;
+}
