@@ -13,9 +13,10 @@ function initDemo() {
     var ctx = canvas.getContext("2d");
 
     var width = canvas.clientWidth;
-    var textWidth = ctx.measureText("Bare en test").width;
     var x = (width - textWidth) / 2;
 
+    ctx.font = "30px Arial";
+    var textWidth = ctx.measureText("Bare en test").width;
     ctx.fillText("Bare en test", x, 50);
 
 }
