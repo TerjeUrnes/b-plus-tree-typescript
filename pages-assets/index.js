@@ -16,11 +16,11 @@ function initDemo() {
     canvas.height = canvas.clientHeight;
 
     ctx.fillStyle = "#ffffff";
-    ctx.font = "10px Arial";
-    var textWidth = ctx.measureText("Bare en test").width;
+    ctx.font = "14px Arial";
+    var textWidth = ctx.measureText("210").width;
 
     var x = Math.floor((canvas.width - textWidth) / 2);
-    ctx.fillText("Bare en test", x, 50);
+    ctx.fillText("210", x, 50);
 
 }
 
