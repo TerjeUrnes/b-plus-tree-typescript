@@ -16,6 +16,7 @@ function initDemo() {
     canvas.height = canvas.clientHeight;
 
     ctx.fillStyle = "#ffffff";
+    ctx.strokeStyle = "#ffffff";
     ctx.font = "14px Arial";
     var textWidth = ctx.measureText("210").width;
 
@@ -26,6 +27,6 @@ function initDemo() {
     ctx.fillRect(x + textWidth + 30, 40, 10, 10);
     ctx.fillRect(x + textWidth + 50, 40, 10, 10);
     ctx.fillRect(x + textWidth + 70, 40, 10, 10);
-    ctx.strokeRect(x - 10, 35, textWidth + (4 * 20) + 20, 20);
+    ctx.strokeRect(x - 20, 30, textWidth + (4 * 20) + 40, 30);
 }
 
