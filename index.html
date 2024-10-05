@@ -9,7 +9,39 @@
         <title>Slideshow Demo</title>
     </head>
     <body>
-        Testing.
+
+        
+
+        <div id="controls">
+            <header>
+                <h1><span>B+ Demo</span></h1>
+            </header>
+            <div class="control">
+                <h2>Create Tree</h2>
+                <div class="input-field">
+                    <label>Tree Order</label>
+                    <input id="tree-order-input" type="number" min="3" max="9" value="3" />
+                </div>
+                <div class="input-field">
+                    <label>Left After Split</label>
+                    <input id="after-split-input" type="number" min="2" max="8" value="3" />
+                </div>
+                <div class="input-field">
+                    <label>Min Before Merge</label>
+                    <input id="before-merge-input" type="number" min="1" max="7" value="3" />
+                </div>
+                
+                <input id="tree-create-button" type="button" value="Create" />
+            </div>
+            <div id="manipulate-tree" class="control">
+                <h2>Manipulate Tree</h2>
+                <div class="input-field">
+                    <label>Add</label>
+                    <input id="add-input" type="number" min="1" max="999" value="3" />
+                    <input id="add-button" type="button" value="Add" />
+                </div>
+            </div>
+        </div>
 
         <canvas id="tree-canvas"></canvas>
     </body>
