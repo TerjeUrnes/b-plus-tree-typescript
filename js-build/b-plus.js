@@ -22,7 +22,7 @@ export class BPlus {
         this._minNumChildBeforeUnderflow = minNumChildBeforeUnderflow > 1 ? minNumChildBeforeUnderflow : 1;
     }
     Add(dataBlock) {
-        if (this._root != null && this._root != undefined) {
+        if (this._root != null) {
             let result = this._root.Add(dataBlock);
             if (result != null) {
                 this._root = result;

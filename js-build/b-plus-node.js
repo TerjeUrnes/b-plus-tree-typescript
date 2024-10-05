@@ -50,6 +50,9 @@ export class BPlusNode {
         }
         this._childrenCount--;
     }
+    GetChildIndex(key) {
+        return this.GetChildFindIndex(key);
+    }
     GetChildFindIndex(key) {
         for (let i = this._childrenCount - 1; i >= 0; i--) {
             if (key.CompareTo(this._children[i].Key) >= 0) {

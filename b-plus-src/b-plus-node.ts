@@ -72,7 +72,11 @@ export abstract class BPlusNode {
         this._childrenCount--;
     }
 
-    public GetChildFindIndex(key: IKey) : number {
+    public GetChildIndex(key: IKey) : number {
+        return this.GetChildFindIndex(key);
+    }
+
+    protected GetChildFindIndex(key: IKey) : number {
         for (let i = this._childrenCount - 1; i >= 0; i--) {
             if (key.CompareTo(this._children[i].Key) >= 0) {
                 return i;
@@ -81,7 +85,7 @@ export abstract class BPlusNode {
         return 0;
     }
 
-    public GetChildInsertIndex(key: IKey) : number {
+    protected GetChildInsertIndex(key: IKey) : number {
         for (let i = this._childrenCount - 1; i >= 0; i--) {
             if (key.CompareTo(this._children[i].Key) > 0) {
                 return i + 1;

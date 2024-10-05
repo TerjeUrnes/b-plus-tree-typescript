@@ -1,7 +1,9 @@
 import { BPlus } from "../../b-plus-src/b-plus";
+import { DataNode } from "../../b-plus-src/data-node";
 import { InternalNode } from "../../b-plus-src/internal-node";
 import { TraverseRapport } from "../classes/traverserapport";
 import { Key } from "../key";
+import { DataNodeEx } from "./data-node-ex";
 import { InternalNodeEx } from "./internal-node-ex";
 
 // BPlus;
@@ -28,6 +30,9 @@ export class BPlusEx extends BPlus {
         if (instance.RootNode != null) {
             if (instance.RootNode instanceof InternalNode) {
                 InternalNodeEx.GetWithRapport(instance.RootNode, key, rapport);
+            }
+            else if (instance.RootNode instanceof DataNode) {
+                DataNodeEx.GetWithRapport(instance.RootNode, key, rapport);
             }
         }
         return rapport;
