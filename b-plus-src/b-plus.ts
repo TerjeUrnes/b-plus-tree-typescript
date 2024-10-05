@@ -40,7 +40,10 @@ export class BPlus {
 
     public Add(dataBlock: IDataBlock) : void {
         if (this._root != null) {
-           this._root.Add(dataBlock);
+           let result = this._root.Add(dataBlock);
+           if (result != null) {
+               this._root = result;
+           }
         }
         else {
             this._root = new DataNode(
