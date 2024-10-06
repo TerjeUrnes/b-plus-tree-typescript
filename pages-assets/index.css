@@ -62,10 +62,6 @@ span {
     gap: 0.5rem;
 }
 
-h2 {
-
-}
-
 .input-field {
     display: flex;
     flex-flow: row nowrap;
