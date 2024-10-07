@@ -101,6 +101,7 @@ export class DataNode extends BPlusNode {
         if (parent == null) {
             const newParent = new InternalNode(parent, this._treeOrder, this._afterAtSplit, this._minBeforeUnderflow, this);
             newParent.AddNode(newRightNode);
+            this.ParentNode = newParent;
             return newParent;
         }
         return newRightNode;

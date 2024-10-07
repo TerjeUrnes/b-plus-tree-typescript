@@ -21,7 +21,7 @@ export class InternalNode extends BPlusNode {
         this._key = this.SmallestKey;
     }
     Add(dataBlock) {
-        const index = this.GetChildInsertIndex(dataBlock.Key);
+        const index = this.GetChildFindIndex(dataBlock.Key);
         const result = this._children[index].Add(dataBlock);
         if (result != null) {
             this.InsertChildAtIndex(index + 1, result);
