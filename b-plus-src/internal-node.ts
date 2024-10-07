@@ -34,7 +34,7 @@ export class InternalNode extends BPlusNode {
     }
 
     public Add(dataBlock: IDataBlock): BPlusNode | null {
-        const index = this.GetChildInsertIndex(dataBlock.Key);
+        const index = this.GetChildFindIndex(dataBlock.Key);
         const result = (this._children[index] as BPlusNode).Add(dataBlock);
         if (result != null) {
             this.InsertChildAtIndex(index + 1, result);

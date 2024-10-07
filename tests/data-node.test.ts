@@ -128,26 +128,50 @@ describe("Adding 10 blocks to a order 10 node", () => {
 
 describe("Linking between blocks", () => {
 
-    var firstKey = new Key(10);
-    var secondKey = new Key(20);
     var instance: DataNode;
-    var dataBlock: DataBlock
-    var secondDataBlock: DataBlock
+    var dataBlocks: DataBlock[]
 
     beforeEach(() => {
-        dataBlock = new DataBlock(firstKey);
-        secondDataBlock = new DataBlock(secondKey);
-        instance = new DataNode(null, 4, 1, 1, dataBlock);
-        instance.Add(secondDataBlock);
+        dataBlocks = [];
+        for (var i = 0; i < 100; i++) {
+            var dataBlock = new DataBlock(new Key(i + 1));
+            dataBlocks.push(dataBlock);
+        }
+        instance = new DataNode(null, 100, 1, 1, dataBlocks[0]);
     });
 
     test("2 blocks can get each others data block", () => {
-        expect(dataBlock.Next).toBe(secondDataBlock);
-        expect(secondDataBlock.Previous).toBe(dataBlock);
+        instance.Add(dataBlocks[1]);
+        expect(dataBlocks[0].Next).toBe(dataBlocks[1]);
+        expect(dataBlocks[1].Previous).toBe(dataBlocks[0]);
     })
 
     test("10 block has correct linking", () => {
-        
+        instance.Add(dataBlocks[8]);
+        instance.Add(dataBlocks[9]);
+        instance.Add(dataBlocks[5]);
+        instance.Add(dataBlocks[6]);
+        instance.Add(dataBlocks[2]);
+        instance.Add(dataBlocks[7]);
+        instance.Add(dataBlocks[4]);
+        instance.Add(dataBlocks[3]);
+        instance.Add(dataBlocks[1]);
+
+        for (var i = 0; i < 9; i++) {
+            expect(dataBlocks[i].Next).toBe(dataBlocks[i + 1]);
+            expect(dataBlocks[i + 1].Previous).toBe(dataBlocks[i]);
+        }
+    })
+
+    test("100 block has correct linking", () => {
+        for (var i = 1; i < 100; i++) {
+            instance.Add(dataBlocks[i]);
+        }
+
+        for (var i = 0; i < 99; i++) {
+            expect(dataBlocks[i].Next).toBe(dataBlocks[i + 1]);
+            expect(dataBlocks[i + 1].Previous).toBe(dataBlocks[i]);
+        }
     })
 });
 
@@ -173,6 +197,14 @@ describe("Splitting a data node", () => {
         instance.Add(dataBlock4);
 
         expect(instance.ChildrenCount).toBe(2);
+    });
+
+    test("Got correct parent", () => {
+        instance.Add(dataBlock2);
+        instance.Add(dataBlock3);
+        let newParent = instance.Add(dataBlock4) as BPlusNode;
+
+        expect(instance.ParentNode).toBe(newParent);
     });
 
     test("Has correct traverse paths", () => {
