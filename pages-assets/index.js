@@ -64,6 +64,8 @@ class BPlusDemo {
     _addButton;
     _canvas;
     _drawContext;
+    _width;
+    _height;
 
     constructor() {
         BPlusDemo._instance = this;
@@ -75,11 +77,10 @@ class BPlusDemo {
 
     InitCanvas() {
         this._drawContext = this._canvas.getContext("2d");
-        this.SetCanvasSize();
+        //this.SetCanvasSize();
 
         window.addEventListener("resize", () => {
-            this.SetCanvasSize();
-            console.log("resize");
+            //this.SetCanvasSize();
         });
     }
 
@@ -108,50 +109,143 @@ class BPlusDemo {
         this.DrawTree();
     }
 
-    SetCanvasSize() {
-        if (this._canvas.width != this._canvas.clientWidth) {
-            this._canvas.width = this._canvas.clientWidth;
-            this.DrawTree();
+    SetCanvasSize(width, height) {
+        if (this._canvas.width != width) {
+            this._canvas.width = width; //this._canvas.clientWidth;
+            this._canvas.style.width = width + "px";
         }
-        if (this._canvas.height != this._canvas.clientHeight) {
-            this._canvas.height = this._canvas.clientHeight;
+        if (this._canvas.height != height) {
+            this._canvas.height = height; //this._canvas.clientHeight;
+            this._canvas.style.height = height + "px";
         }
     }
 
     DrawTree() {
 
         this._drawContext.clearRect(0, 0, this._canvas.width, this._canvas.height);
+        let layout = this.CalculateLayout();
 
-        if(this._tree == undefined || 
-            this._tree.RootNode == null ||
-            this._tree.RootNode.ChildrenCount == 0) {
-                this.DrawEmpty();
-                return;
+        this.SetCanvasSize(layout[0], 600);
+
+        if (layout.length > 0) {
+            this.DrawLevel2(layout);
         }
-        else {
-            this.DrawLevel([[this._tree.RootNode.Children,this._tree.RootNode.ChildrenCount]], 1);
-            if (this._tree.RootNode.Children[0] instanceof DataNode) {
-                let nodes = [];
-                for (let i = 0; i < this._tree.RootNode.ChildrenCount; i++) {
-                    nodes.push([this._tree.RootNode.Children[i].Children, this._tree.RootNode.Children[i].ChildrenCount]);
-                }
-                this.DrawLevel(nodes, 2);
-            }
-        }
+
+        // if(this._tree == undefined || 
+        //     this._tree.RootNode == null ||
+        //     this._tree.RootNode.ChildrenCount == 0) {
+        //         this.DrawEmpty();
+        // }
+        // else {
+        //     this._height = 20;
+        //     this.DrawLevel([[this._tree.RootNode.Children,this._tree.RootNode.ChildrenCount]], 0);
+        //     this._height += 20;
+        //     if (this._tree.RootNode.Children[0] instanceof DataNode) {
+        //         let nodes = [];
+        //         for (let i = 0; i < this._tree.RootNode.ChildrenCount; i++) {
+        //             nodes.push([this._tree.RootNode.Children[i].Children, this._tree.RootNode.Children[i].ChildrenCount]);
+        //         }
+        //         this.DrawLevel(nodes, 1);
+        //     }
+            
+        // }
         
     }
 
+    CalculateLayout() {
+        let widths = [];
+        widths.push(0);
+
+        let parentNodes = [];
+
+        this._drawContext.font = "16px Arial";
+
+        if (this._tree != undefined && this._tree.RootNode != null) {
+            parentNodes.push(this._tree.RootNode);
+            while(parentNodes[0] instanceof DataBlock == false) {
+                let nodes = [];
+                let levelWidths = [];
+                levelWidths.push(0);
+                for (let i = 0; i < parentNodes.length; i++) {
+                    let nodeWidth = 0;
+                    let keys = [];
+                    for (let j = 0; j < parentNodes[i].ChildrenCount; j++) {
+                        nodes.push(parentNodes[i].Children[j]);
+                        let string = parentNodes[i].Children[j].Key.ToString();
+                        let width = Math.ceil(this._drawContext.measureText(string).width);
+                        if (parentNodes[i].ChildrenCount > 1 && j < parentNodes[i].ChildrenCount - 1) {
+                            width += 10;
+                        }
+                        nodeWidth += width;
+                        keys.push([string, width]); 
+                    }
+                    if (i > 0) {
+                        levelWidths[0] += 40;
+                    }
+                    levelWidths[0] += nodeWidth;
+                    levelWidths.push([nodeWidth, 0, keys]);
+                }
+                widths.push(levelWidths);
+                parentNodes = nodes;
+            }
+        }
+
+        let maxWidth = 0;
+
+        for (let i = 1; i < widths.length; i++) {
+            if (widths[i][0] > maxWidth) {
+                maxWidth = widths[i][0];
+            }
+        }
+
+        widths[0] = maxWidth;
+
+        for (let i = 1; i < widths.length; i++) {
+            let countNodes = widths[i].length - 1;
+            let spaceNode = maxWidth / countNodes;
+            for (let j = 1; j < widths[i].length; j++) {
+                let center = (spaceNode - widths[i][j][0]) / 2;
+                widths[i][j][1] = spaceNode * (j - 1) + center;
+                console.log(maxWidth + " " + spaceNode + " " + center + " " + widths[i][j][1]);
+            }
+        }
+
+        return widths;
+    }
+
+    DrawLevel2(data) {
+        this._drawContext.font = "16px Arial";
+        this._drawContext.fillStyle = "#ffffffff";
+
+        for (let i = 1; i < data.length; i++) {
+            let x = 0;
+            for (let j = 1; j < data[i].length; j++) {
+                x = data[i][j][1];
+                for (let k = 0; k < data[i][j][2].length; k++) {
+                    this._drawContext.fillText(data[i][j][2][k][0], x, 40 * i + 10);
+                    x += data[i][j][2][k][1];
+                }
+                
+                console.log("value: " + data[i][j][2]);
+            }
+                
+        }
+    }
+
     DrawEmpty() {
-        let x = Math.floor((this._canvas.width - 30) / 2);
+        //let x = Math.floor((this._canvas.width - 30) / 2);
+        this._width = 70;
+        this._height = 70;
+        let x = this._width / 2 - 15;
+        this.SetCanvasSize(this._width, this._height);
 
         this._drawContext.strokeStyle = "white";
-        this._drawContext.strokeRect(x, 40, 30, 30);
+        this._drawContext.strokeRect(x, 20, 30, 30);
     }
 
     DrawLevel(nodes, level) {
 
-        this._drawContext.font = "16px Arial";
-        this._drawContext.fillStyle = "white";
+        //this._height += 30;
 
         let totalWidth = 0;
         let allResults = [];
@@ -160,7 +254,7 @@ class BPlusDemo {
             let count = nodes[i][1];
             let result = [];
             for (let j = 0; j < count; j++) {
-                let string = "" + nodes[i][0][j].Key.ToString();
+                let string = nodes[i][0][j].Key.ToString();
                 let width = Math.ceil(this._drawContext.measureText(string).width);
                 result.push([string, width]);
             }
@@ -179,19 +273,26 @@ class BPlusDemo {
                 totalWidth += textWidth + 40;
             }
         }
+
+        totalWidth += 40;
+        this._width = totalWidth;
+        this.SetCanvasSize(800, 600);
+
+        this._drawContext.font = "16px Arial";
+        this._drawContext.fillStyle = "#ffffffff";
         
         let x = Math.floor((this._canvas.width - totalWidth) / 2);
-        let y = 40 * level;
+        let y = 20 + 30 * level;
         
         for (let i = 0; i < allResults.length; i++) {
             for (let j = 0; j < allResults[i].length; j++) {
-                this._drawContext.fillText(allResults[i][j][0], x, 20 + y);
+                this._drawContext.fillText(allResults[i][j][0], x, y);
                 x += allResults[i][j][1] + 20;
             }
-            x += 40;
+            if (i < allResults.length - 1) {
+                x += 40;
+            }
         }
-
-        
         
 
         
